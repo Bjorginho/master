@@ -1,4 +1,4 @@
-import { Course, User } from "@/app/types/types";
+import { Course, User } from "@/types/types";
 import React, { createContext, useContext } from "react";
 
 interface Props {

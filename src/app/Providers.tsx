@@ -1,6 +1,6 @@
 "use client";
 import { UserContext } from "../context/UserContext";
-import { Course, User } from "./types/types";
+import { Course, User } from "../types/types";
 
 const defaultUser: User = {
   name: "John Doe",

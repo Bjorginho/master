@@ -1,4 +1,4 @@
-import { Course as CourseType } from "@/app/types/types";
+import { Course as CourseType } from "@/types/types";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { Button } from "../ui/button";
 import Link from "next/link";
@@ -17,7 +17,13 @@ const Course = (props: Props) => {
           <p>{props.course.description}</p>
           <div className="flex justify-center">
             <Button asChild>
-              <Link href={props.course.courseCode}>Go to course</Link>
+              <Link
+                href={{
+                  pathname: props.course.courseCode,
+                }}
+              >
+                Go to course
+              </Link>
             </Button>
           </div>
         </div>

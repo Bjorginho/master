@@ -1,9 +1,7 @@
-const Header = () => {
+const Header = ({ text }: { text: string }) => {
   return (
-    <header className="bg-black flex justify-center py-3">
-      <p className="text-white text-lg font-bold tracking-wide">
-        IT2018 Webutvikling
-      </p>
+    <header className="bg-[#00509e] flex justify-center py-3">
+      <p className="text-white text-lg font-bold tracking-wide">{text}</p>
     </header>
   );
 };
