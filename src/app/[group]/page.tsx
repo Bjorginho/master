@@ -36,7 +36,7 @@ export default function Group() {
 
   return (
     <>
-      <Header text={course ? course.name : "loading"} />
+      {/* <Header text={course ? course.name : "loading"} /> */}
       <main className="container mx-auto mt-8">
         {loading && loadingCourse && <p>Loading...</p>}
         {data && course && (
@@ -55,7 +55,7 @@ export default function Group() {
               </Link>
             </div>
             <div className="grid grid-cols-12 gap-6 my-8">
-              <Card className="col-span-6 bg-cardX">
+              <Card className="col-span-6">
                 <CardHeader>
                   <h2 className="text-center font-bold ">Status Group</h2>
                 </CardHeader>
@@ -65,29 +65,33 @@ export default function Group() {
                     Icon={MessagesSquare}
                     notificationNumber={null}
                     spanText={"Chat"}
+                    href="/chat"
                   />
                   <IconWithNotification
                     iconSize={iconSize}
                     Icon={Sticker}
                     notificationNumber={4}
                     spanText={"Feedback"}
+                    href="/feedback"
                   />
                   <IconWithNotification
                     iconSize={iconSize}
                     Icon={ScrollText}
                     notificationNumber={4}
                     spanText={"Contract"}
+                    href="/contract"
                   />
                   <IconWithNotification
                     iconSize={iconSize}
                     Icon={MessageSquareWarning}
                     notificationNumber={4}
                     spanText={"Report"}
+                    href="/report"
                   />
                 </CardContent>
               </Card>
               <WeeklyNotifications className="col-span-6 rounded-lg container py-6" />
-              <Card className="col-span-6 bg-cardX">
+              <Card className="col-span-6 ">
                 <CardHeader>
                   <h2 className="text-center font-bold">Group members</h2>
                 </CardHeader>

@@ -2,13 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --ntnu-main: #00509e;
+  --ntnu-secondary: #6096d0;
+}
+
 @layer base {
   :root {
     --background: #f5f3f2;
     --foreground: 222.2 84% 4.9%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: var(--ntnu-secondary);
+    --card-foreground: #000;
 
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;

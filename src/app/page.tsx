@@ -9,7 +9,6 @@ export default function Home() {
 
   return (
     <>
-      <Header text={"[PROJECT TITLE HERE]"} />
       <main className="flex min-h-screen flex-col items-center p-24 gap-6">
         <h1 className="font-bold text-4xl">Your courses</h1>
         <div className="flex gap-4">
