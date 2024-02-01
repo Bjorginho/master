@@ -15,7 +15,6 @@ import {
   ScrollText,
   Sticker,
 } from "lucide-react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function Group() {
@@ -25,35 +24,12 @@ export default function Group() {
   const { data, loading } = useGroup(pathname, user.name);
   const { course, loadingCourse } = useCourse(pathname);
 
-  const getInitials = () => {
-    try {
-      const username = user.name.split(" ");
-      return username[0].charAt(0) + username[1].charAt(0);
-    } catch (error) {
-      return user.name.charAt(0);
-    }
-  };
-
   return (
     <>
-      {/* <Header text={course ? course.name : "loading"} /> */}
       <main className="container mx-auto mt-8">
         {loading && loadingCourse && <p>Loading...</p>}
         {data && course && (
           <>
-            <div className="flex justify-between w-full">
-              <Link href={"/"}>
-                <Button variant={"outline"} className="rounded-full">
-                  <MoveLeft />
-                </Button>
-              </Link>
-              <h1 className="text-xl">Group {data && data.id}</h1>
-              <Link href="#">
-                <Avatar>
-                  <AvatarFallback>{getInitials()}</AvatarFallback>
-                </Avatar>
-              </Link>
-            </div>
             <div className="grid grid-cols-12 gap-6 my-8">
               <Card className="col-span-6">
                 <CardHeader>

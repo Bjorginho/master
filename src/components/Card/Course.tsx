@@ -9,21 +9,15 @@ type Props = {
 
 const Course = (props: Props) => {
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>{props.course.courseCode}</CardHeader>
       <CardContent className="flex flex-col gap-2 h-full">
-        <h2 className="font-bold text-2xl ">{props.course.name}</h2>
+        <h2 className="font-bold text-2xl">{props.course.name}</h2>
         <div className="">
           <p>{props.course.description}</p>
           <div className="flex justify-center">
             <Button asChild>
-              <Link
-                href={{
-                  pathname: props.course.courseCode,
-                }}
-              >
-                Go to course
-              </Link>
+              <Link href={props.course.courseCode}>Go to course</Link>
             </Button>
           </div>
         </div>
