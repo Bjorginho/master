@@ -26,7 +26,7 @@ const IconWithNotification: React.FC<IconWithNotificationProps> = ({
     <div className="flex flex-col items-center relative">
       <Button asChild size={"lg"} className="bg-transparent text-[#000]">
         <Link href={`${pathname}${href}`}>
-          <Icon iconSize={iconSize} />
+          <Icon iconSize={iconSize} className="text-foreground" />
         </Link>
       </Button>
       <p>{spanText}</p>

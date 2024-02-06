@@ -21,7 +21,7 @@ const Header = () => {
     if (currentCourse) {
       setHeaderText(currentCourse.courseCode + " - " + currentCourse.name);
     } else {
-      setHeaderText("Home");
+      setHeaderText("");
     }
   }, [pathname]);
 
@@ -35,8 +35,8 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-[#00509e] flex justify-between items-center py-3 container">
-      <div></div>
+    <header className="bg-[#6096d0] dark:bg-transparent flex justify-between items-center py-3 container">
+      <h1 className="font-bold text-[#f8fafc]">Title here</h1>
       <p className="text-white text-lg font-bold tracking-wide">{headerText}</p>
       <div className="flex gap-3">
         <ModeToggleButton />

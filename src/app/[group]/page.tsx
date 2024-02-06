@@ -78,7 +78,7 @@ export default function Group() {
                       className="flex flex-col items-center gap-2"
                     >
                       <Avatar>
-                        <AvatarFallback>
+                        <AvatarFallback className="text-foreground">
                           {member.firstName.charAt(0)}
                           {member.lastName.charAt(0)}
                         </AvatarFallback>
