@@ -17,7 +17,6 @@ const Header = () => {
     const currentCourse = courses.find((course) =>
       pathname.startsWith(`/${course.courseCode}`)
     );
-    console.log(currentCourse);
     if (currentCourse) {
       setHeaderText(currentCourse.courseCode + " - " + currentCourse.name);
     } else {

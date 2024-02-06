@@ -74,7 +74,7 @@ export default function Feedback() {
 
 const FeedbackBox = (props: { title: string; description: string }) => {
   return (
-    <Card className="bg-secondary mb-3">
+    <Card className="mb-3">
       <CardHeader>
         <h3>{props.title}</h3>
       </CardHeader>

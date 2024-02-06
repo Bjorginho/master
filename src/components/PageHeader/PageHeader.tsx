@@ -9,7 +9,7 @@ const PageHeader = () => {
   const pathname = usePathname();
 
   return (
-    <div className="flex justify-between w-full">
+    <div className="flex justify-between w-full mb-4">
       {pathname !== "/" && (
         <>
           <Button

@@ -1,20 +1,11 @@
 "use client";
-import Header from "@/components/Header";
 import IconWithNotification from "@/components/IconWithNotification";
 import WeeklyNotifications from "@/components/WeeklyNotifications";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useUser } from "@/context/UserContext";
 import { useCourse } from "@/hooks/useCourse";
 import { useGroup } from "@/hooks/useGroup";
-import {
-  MessageSquareWarning,
-  MessagesSquare,
-  MoveLeft,
-  ScrollText,
-  Sticker,
-} from "lucide-react";
 import { usePathname } from "next/navigation";
 
 export default function Group() {
@@ -37,29 +28,21 @@ export default function Group() {
                 </CardHeader>
                 <CardContent className="flex items-stretch justify-between">
                   <IconWithNotification
-                    iconSize={iconSize}
-                    Icon={MessagesSquare}
                     notificationNumber={null}
                     spanText={"Chat"}
                     href="/chat"
                   />
                   <IconWithNotification
-                    iconSize={iconSize}
-                    Icon={Sticker}
                     notificationNumber={4}
                     spanText={"Feedback"}
                     href="/feedback"
                   />
                   <IconWithNotification
-                    iconSize={iconSize}
-                    Icon={ScrollText}
                     notificationNumber={4}
                     spanText={"Contract"}
                     href="/contract"
                   />
                   <IconWithNotification
-                    iconSize={iconSize}
-                    Icon={MessageSquareWarning}
                     notificationNumber={4}
                     spanText={"Report"}
                     href="/report"
