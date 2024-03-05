@@ -1,0 +1,64 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Student {
+  id        Int            @id @default(autoincrement())
+  email     String         @unique
+  firstName String
+  lastName  String
+  classes   StudentClass[]
+}
+
+model Course {
+  id          Int      @id @default(autoincrement())
+  code        String   @unique @default("")
+  name        String   @db.VarChar(255)
+  description String   @db.Text
+  institute   String   @db.VarChar(255)
+  createdAt   DateTime @default(now())
+  classes     Class[]
+}
+
+model Class {
+  id         Int            @id @default(autoincrement())
+  year       Int
+  semester   SEMESTER
+  course     Course         @relation(fields: [courseCode], references: [code])
+  courseCode String
+  students   StudentClass[]
+  groups     Group[]
+}
+
+model StudentClass {
+  student   Student @relation(fields: [studentId], references: [id])
+  studentId Int
+  class     Class   @relation(fields: [classId], references: [id])
+  classId   Int
+  group     Group?  @relation(fields: [groupId], references: [id])
+  groupId   Int?
+
+  @@id([studentId, classId])
+}
+
+model Group {
+  id       Int            @id @default(autoincrement())
+  class    Class          @relation(fields: [classId], references: [id])
+  classId  Int
+  students StudentClass[]
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+}
+
+enum SEMESTER {
+  FALL
+  SPRING
+}
