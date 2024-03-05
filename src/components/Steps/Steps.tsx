@@ -9,7 +9,7 @@ type StepsProps = {
 };
 
 const Steps = ({ value, step, setStep }: StepsProps) => {
-  const MAX_STEPS = 5;
+  const MAX_STEPS = 4;
 
   const handleStepUp = () => {
     if (step === MAX_STEPS) return;

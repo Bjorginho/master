@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Course, courses } from "@/types/Course";
+// import { Course, courses } from "@/types/Course";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Button } from "../ui/button";
 import { DialogClose } from "@radix-ui/react-dialog";

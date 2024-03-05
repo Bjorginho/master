@@ -1,8 +1,4 @@
-export type Course = {
-  code: string;
-  title: string;
-  institute: string;
-};
+import { Course } from "@prisma/client";
 
 interface Employee {
   name: string;
@@ -10,109 +6,131 @@ interface Employee {
   email: string;
 }
 
-// Mock data
-
-const trond: Employee = {
-  name: "Trond Aalberg",
-  department: "Department of Computer Science",
-  email: "trond.aalberg@ntnu.no",
-};
-
-const terje: Employee = {
-  name: "Terje Gjøsæter",
-  department: "Department of Computer Science",
-  email: "terje.gjoseter@ntnu.no",
-};
-
 export const courses: Course[] = [
   {
-    code: "IT2810",
-    title: "Web Development",
+    id: "IT2810",
+    name: "Web Development",
     institute: "Department of Computer Science",
+    description: "",
+    createdAt: new Date(),
   },
   {
-    code: "TMM4220",
-    title: "Innovation Design Thinking",
+    id: "TMM4220",
+    name: "Innovation Design Thinking",
     institute: "Department of Mechanical and Industrial Engineering",
+    description: "",
+    createdAt: new Date(),
   },
   {
-    code: "TDT4240",
-    title: "Software Architecture",
+    id: "TDT4240",
+    name: "Software Architecture",
     institute: "Department of Computer Science",
+    description: "",
+    createdAt: new Date(),
   },
   {
-    code: "TDT4100",
-    title: "Object-Oriented Programming",
+    id: "TDT4100",
+    name: "Object-Oriented Programming",
     institute: "Department of Computer Science",
+    description: "",
+    createdAt: new Date(),
   },
   {
-    code: "TMA4100",
-    title: "Calculus",
+    id: "TMA4100",
+    name: "Calculus",
     institute: "Department of Mathematical Sciences",
+    description: "",
+    createdAt: new Date(),
   },
   {
-    code: "TDT4140",
-    title: "Software Engineering",
+    id: "TDT4140",
+    name: "Software Engineering",
     institute: "Department of Computer Science",
+    description: "",
+    createdAt: new Date(),
   },
   {
-    code: "TDT4136",
-    title: "Introduction to Artificial Intelligence",
+    id: "TDT4136",
+    name: "Introduction to Artificial Intelligence",
     institute: "Department of Computer Science",
+    description: "",
+    createdAt: new Date(),
   },
   {
-    code: "TDT4175",
-    title: "Information Systems",
+    id: "TDT4175",
+    name: "Information Systems",
     institute: "Department of Computer Science",
+    description: "",
+    createdAt: new Date(),
   },
   {
-    code: "TDT4180",
-    title: "Human-Computer Interaction",
+    id: "TDT4180",
+    name: "Human-Computer Interaction",
     institute: "Department of Computer Science",
+    description: "",
+    createdAt: new Date(),
   },
   {
-    code: "TDT4242",
-    title: "Agile Software Development",
+    id: "TDT4242",
+    name: "Agile Software Development",
     institute: "Department of Computer Science",
+    description: "",
+    createdAt: new Date(),
   },
   {
-    code: "TDT4252",
-    title: "Advanced Software Design",
+    id: "TDT4252",
+    name: "Advanced Software Design",
     institute: "Department of Computer Science",
+    description: "",
+    createdAt: new Date(),
   },
   {
-    code: "TDT4300",
-    title: "Data Warehousing and Data Mining",
+    id: "TDT4300",
+    name: "Data Warehousing and Data Mining",
     institute: "Department of Computer Science",
+    description: "",
+    createdAt: new Date(),
   },
   {
-    code: "TDT4305",
-    title: "Big Data Architecture",
+    id: "TDT4305",
+    name: "Big Data Architecture",
     institute: "Department of Computer Science",
+    description: "",
+    createdAt: new Date(),
   },
   {
-    code: "TDT4336",
-    title: "Intelligent Systems",
+    id: "TDT4336",
+    name: "Intelligent Systems",
     institute: "Department of Computer Science",
+    description: "",
+    createdAt: new Date(),
   },
   {
-    code: "TDT4340",
-    title: "Design and Evaluation of User Interfaces",
+    id: "TDT4340",
+    name: "Design and Evaluation of User Interfaces",
     institute: "Department of Computer Science",
+    description: "",
+    createdAt: new Date(),
   },
   {
-    code: "TDT4350",
-    title: "Web Technology",
+    id: "TDT4350",
+    name: "Web Technology",
     institute: "Department of Computer Science",
+    description: "",
+    createdAt: new Date(),
   },
   {
-    code: "TDT4360",
-    title: "Cloud Computing",
+    id: "TDT4360",
+    name: "Cloud Computing",
     institute: "Department of Computer Science",
+    description: "",
+    createdAt: new Date(),
   },
   {
-    code: "TDT4375",
-    title: "Semantic Web",
+    id: "TDT4375",
+    name: "Semantic Web",
     institute: "Department of Computer Science",
+    description: "",
+    createdAt: new Date(),
   },
 ];

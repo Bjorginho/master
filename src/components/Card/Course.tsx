@@ -19,7 +19,7 @@ const Course = (props: Props & React.HTMLAttributes<HTMLDivElement>) => {
       </CardContent>
       <CardFooter className="flex justify-center">
         <Button asChild>
-          <Link href={props.course.courseCode}>Go to course</Link>
+          <Link href={"/student/" + props.course.courseCode}>Go to course</Link>
         </Button>
       </CardFooter>
     </Card>
