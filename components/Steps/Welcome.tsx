@@ -9,7 +9,9 @@ type WelcomeProps = {
 const Welcome = (props: WelcomeProps) => {
   return (
     <>
-      <h1 className="font-semibold">Welcome to the "Create Course Portal"</h1>
+      <h1 className="font-semibold">
+        Welcome to the &qout;Create Course Portal&qout;
+      </h1>
       <p className="font-light">Selected course:</p>
       <h2 className="font-bold">{props.code && props.code}</h2>
       <p>

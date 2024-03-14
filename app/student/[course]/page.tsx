@@ -21,7 +21,7 @@ const Course = () => {
   useEffect(() => {
     const course = pathname.split("/")[2];
     setHeaderText(course);
-  }, []);
+  }, [pathname, setHeaderText]);
 
   return (
     <div className="flex gap-2 justify-center">

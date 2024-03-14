@@ -72,7 +72,7 @@ const MultipleChoiceQuestionForm = (props: {
         />
         <FormLabel>Choices</FormLabel>
         {fields.map((field, index) => (
-          <div>
+          <div key={index}>
             <FormLabel>Option {index + 1}</FormLabel>
             <div className="flex items-center gap-2">
               <FormField

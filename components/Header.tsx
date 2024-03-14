@@ -22,7 +22,7 @@ const Header = () => {
     } else {
       setHeaderText("");
     }
-  }, [pathname]);
+  }, [pathname, courses]);
 
   const getInitials = () => {
     try {

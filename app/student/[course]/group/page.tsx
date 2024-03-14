@@ -31,7 +31,7 @@ export default function Group() {
     if (id) {
       setHeaderText("Group " + id);
     }
-  }, [id]);
+  }, [id, setHeaderText]);
 
   return (
     <>
