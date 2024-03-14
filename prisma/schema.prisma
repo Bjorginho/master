@@ -53,6 +53,15 @@ model Group {
   students StudentClass[]
 }
 
+model Event {
+  id        Int       @id @default(autoincrement())
+  name      String
+  startDate DateTime
+  endDate   DateTime?
+  location  String
+  createdAt DateTime  @default(now())
+}
+
 enum Role {
   STUDENT
   ADMIN
