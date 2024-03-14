@@ -4,38 +4,44 @@ import { usePathname } from "next/navigation";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import {
+  CalendarDays,
+  LucideIcon,
   MessageSquareWarning,
   MessagesSquare,
   ScrollText,
   Sticker,
 } from "lucide-react";
 
-interface IconWithNotificationProps {
+interface Props {
   notificationNumber: number | null;
   spanText: string;
-  href: string;
+  href: "/chat" | "/feedback" | "/contract" | "/report" | "/calendar";
 }
 
-const IconWithNotification: React.FC<IconWithNotificationProps> = ({
-  notificationNumber,
-  spanText,
-  href,
-}) => {
+const IconWithNotification = (props: Props) => {
+  const { notificationNumber, spanText, href } = props;
   const pathname = usePathname();
-  const iconSize = 48;
 
   const renderIcon = () => {
-    if (href === "/chat") {
-      return <MessagesSquare size={iconSize} className="text-foreground" />;
-    } else if (href === "/feedback") {
-      return <Sticker size={iconSize} className="text-foreground" />;
-    } else if (href === "/contract") {
-      return <ScrollText size={iconSize} className="text-foreground" />;
-    } else if (href === "/report") {
-      return (
-        <MessageSquareWarning size={iconSize} className="text-foreground" />
-      );
+    let Icon: LucideIcon;
+    switch (href) {
+      case "/chat":
+        Icon = MessagesSquare;
+        break;
+      case "/feedback":
+        Icon = Sticker;
+        break;
+      case "/contract":
+        Icon = ScrollText;
+        break;
+      case "/report":
+        Icon = MessageSquareWarning;
+        break;
+      case "/calendar":
+        Icon = CalendarDays;
+        break;
     }
+    return <Icon size={48} className="text-foreground" />;
   };
 
   return (

@@ -51,6 +51,11 @@ export default function Group() {
                     href="/chat"
                   />
                   <IconWithNotification
+                    notificationNumber={null}
+                    spanText={"Calendar"}
+                    href="/calendar"
+                  />
+                  <IconWithNotification
                     notificationNumber={4}
                     spanText={"Feedback"}
                     href="/feedback"
