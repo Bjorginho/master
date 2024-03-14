@@ -14,7 +14,7 @@ const Course = (props: Props & React.HTMLAttributes<HTMLDivElement>) => {
       <CardContent className="flex flex-col justify-between gap-2 ">
         <h2 className="font-bold text-xl">{props.course.name}</h2>
         <div className="flex-grow h-full">
-          <p>{props.course.description}</p>
+          <p className="text-sm">{props.course.description}</p>
         </div>
       </CardContent>
       <CardFooter className="flex justify-center">

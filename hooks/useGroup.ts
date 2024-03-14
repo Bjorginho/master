@@ -1,5 +1,3 @@
-import axios from "axios";
-import e from "cors";
 import { useEffect, useState } from "react";
 
 export interface GroupData {

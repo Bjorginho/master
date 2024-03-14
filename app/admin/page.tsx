@@ -18,7 +18,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { Course } from "@/types/Course";
+import { courses } from "@/types/Course";
+import { Course } from "@/types/types";
 import { ChevronsDown, Plus } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -75,9 +76,7 @@ function Admin() {
               <CardFooter className="justify-center">
                 <Button asChild>
                   <Link
-                    href={`/admin/course?code=${
-                      course.code
-                    }&semester=${1}&year=${2024}`}
+                    href={`/admin/course?code=${course.code}&semester=${1}&year=${2024}`}
                   >
                     Go to course
                   </Link>

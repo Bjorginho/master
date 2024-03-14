@@ -18,16 +18,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-// import { Course, courses } from "@/types/Course";
+import { courses } from "@/types/Course";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Button } from "../ui/button";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { redirect } from "next/dist/server/api-utils";
 import { useRouter } from "next/navigation";
+import { Course } from "@prisma/client";
 
 const formSchema = z.object({
   course: z.string(),
 });
+
+type Schema = z.infer<typeof formSchema>;
 
 const NewCourseForm = ({
   setCourses,
@@ -35,15 +38,15 @@ const NewCourseForm = ({
   setCourses: Dispatch<SetStateAction<Course[]>>;
 }) => {
   const router = useRouter();
-  const [selectedCourse, setSelectedCourse] = useState<
-    z.infer<typeof formSchema>["course"] | null
-  >(null);
+  const [selectedCourse, setSelectedCourse] = useState<Schema["course"] | null>(
+    null
+  );
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {},
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: Schema) {
     const course = courses.find((course) => course.code === values.course);
 
     // Register new course
@@ -58,7 +61,10 @@ const NewCourseForm = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-4"
+      >
         <FormDescription>
           <h1>Register course</h1>
         </FormDescription>
@@ -69,16 +75,23 @@ const NewCourseForm = ({
           render={({ field }) => (
             <FormItem>
               <FormLabel>Course</FormLabel>
-              <Select onValueChange={field.onChange}>
+              <Select
+                onValueChange={field.onChange}
+                // onClick={(e) => e.stopPropagation()}
+              >
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger
+                    onChange={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
                     <SelectValue placeholder="Select a course" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
                   {courses.map((course, index) => (
                     <SelectItem key={index} value={course.code}>
-                      {course.code} - {course.title}
+                      {course.code} - {course.name}
                     </SelectItem>
                   ))}
                 </SelectContent>

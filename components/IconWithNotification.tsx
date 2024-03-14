@@ -40,7 +40,7 @@ const IconWithNotification: React.FC<IconWithNotificationProps> = ({
 
   return (
     <div className="flex flex-col items-center relative">
-      <Button asChild size={"lg"} className="bg-transparent text-[#000]">
+      <Button asChild size={"icon"} variant={"ghost"}>
         <Link href={`${pathname}${href}`}>{renderIcon()}</Link>
       </Button>
       <p>{spanText}</p>
