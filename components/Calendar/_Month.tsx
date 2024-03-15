@@ -90,10 +90,10 @@ export default function MonthView() {
                     index === 0 && colStartClasses[getDay(day)],
                     isSameMonth(day, today)
                       ? isEqual(day, selectedDay)
-                        ? "bg-primary text-white"
+                        ? "bg-gray-200"
                         : "bg-white"
                       : "bg-gray-50 text-gray-500",
-                    " relative  px-3 py-2 hover:cursor-pointer hover:border-4 hover:border-primary"
+                    " relative  px-3 py-2 hover:cursor-pointer hover:bg-gray-100"
                   )}
                 >
                   <time
@@ -162,7 +162,7 @@ export default function MonthView() {
                     dateTime={day.toString()}
                     className={cn(
                       isEqual(day, selectedDay) &&
-                        "flex h-6 w-6 items-center justify-center rounded-full",
+                        "flex size-6 items-center justify-center rounded-full",
                       isEqual(day, selectedDay) &&
                         isToday(day) &&
                         "bg-indigo-600",

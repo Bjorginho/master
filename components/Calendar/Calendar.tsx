@@ -17,7 +17,7 @@ const Calendar = () => {
         <div className="col-span-full lg:col-span-9 row-span-full">
           <MonthView />
         </div>
-        <div className="col-span-full lg:col-span-3">
+        <div className="col-span-full lg:col-span-3 row-span-6">
           <Events />
         </div>
       </div>

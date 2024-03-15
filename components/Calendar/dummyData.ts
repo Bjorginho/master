@@ -23,4 +23,11 @@ export const events: CalendarEvent[] = [
     endDatetime: "2024-03-05T14:30",
     type: "work",
   },
+  {
+    name: "Work with A5",
+    imageUrl: "",
+    startDatetime: "2024-03-05T10:00",
+    endDatetime: "2024-03-05T14:30",
+    type: "work",
+  },
 ];
