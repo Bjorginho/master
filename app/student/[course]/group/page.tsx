@@ -1,7 +1,5 @@
 "use client";
-import { CourseCarousel } from "@/components/Carousel/Carousel";
-import IconWithNotification from "@/components/IconWithNotification";
-import WeeklyNotifications from "@/components/WeeklyNotifications";
+import NotificationButton from "@/components/NotificationButton";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useUser } from "@/context/UserContext";
@@ -15,7 +13,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { usePageHeader } from "@/context/PageHeaderContext";
 
 export default function Group() {
@@ -45,27 +43,27 @@ export default function Group() {
                   <h2 className="text-center font-bold ">Status Group</h2>
                 </CardHeader>
                 <CardContent className="flex items-stretch justify-between">
-                  <IconWithNotification
+                  <NotificationButton
                     notificationNumber={null}
                     spanText={"Chat"}
                     href="/chat"
                   />
-                  <IconWithNotification
+                  <NotificationButton
                     notificationNumber={null}
                     spanText={"Calendar"}
                     href="/calendar"
                   />
-                  <IconWithNotification
+                  <NotificationButton
                     notificationNumber={4}
                     spanText={"Feedback"}
                     href="/feedback"
                   />
-                  <IconWithNotification
+                  <NotificationButton
                     notificationNumber={4}
                     spanText={"Contract"}
                     href="/contract"
                   />
-                  <IconWithNotification
+                  <NotificationButton
                     notificationNumber={4}
                     spanText={"Report"}
                     href="/report"
@@ -73,7 +71,6 @@ export default function Group() {
                 </CardContent>
               </Card>
               <div className="col-span-6 place-self-center w-full h-full flex flex-col gap-4">
-                {/* <CourseCarousel /> */}
                 <h2 className="font-semibold text-center">Upcoming tasks</h2>
                 <div className="flex gap-4 justify-center">
                   <Task

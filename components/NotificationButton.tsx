@@ -1,8 +1,7 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Button } from "./ui/button";
-import Link from "next/link";
 import {
   CalendarDays,
   LucideIcon,
@@ -18,9 +17,10 @@ interface Props {
   href: "/chat" | "/feedback" | "/contract" | "/report" | "/calendar";
 }
 
-const IconWithNotification = (props: Props) => {
+const NotificationButton = (props: Props) => {
   const { notificationNumber, spanText, href } = props;
   const pathname = usePathname();
+  const router = useRouter();
 
   const renderIcon = () => {
     let Icon: LucideIcon;
@@ -45,18 +45,20 @@ const IconWithNotification = (props: Props) => {
   };
 
   return (
-    <div className="flex flex-col items-center relative">
-      <Button asChild size={"icon"} variant={"ghost"}>
-        <Link href={`${pathname}${href}`}>{renderIcon()}</Link>
-      </Button>
+    <Button
+      variant="ghost"
+      onClick={() => router.push(pathname + href)}
+      className="flex flex-col w-fit h-fit relative"
+    >
+      <div>{renderIcon()}</div>
       <p>{spanText}</p>
       {notificationNumber && notificationNumber > 0 && (
         <span className="absolute top-0 right-0 mt-[-5px] bg-red-500 text-white rounded-full px-2 py-1 text-xs">
           {notificationNumber}
         </span>
       )}
-    </div>
+    </Button>
   );
 };
 
-export default IconWithNotification;
+export default NotificationButton;
