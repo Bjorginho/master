@@ -1,10 +1,8 @@
 "use client";
 
 import { useUser } from "@/context/UserContext";
-import { RefreshCcw } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ModeToggleButton } from "./Button/ModeToggle";
 import Link from "next/link";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 
@@ -15,8 +13,9 @@ const Header = () => {
 
   useEffect(() => {
     const currentCourse = courses.find((course) =>
-      pathname.startsWith(`/${course.courseCode}`)
+      pathname.startsWith(`/student/${course.courseCode}`)
     );
+    console.log(currentCourse);
     if (currentCourse) {
       setHeaderText(currentCourse.courseCode + " - " + currentCourse.name);
     } else {
@@ -35,7 +34,7 @@ const Header = () => {
 
   return (
     <header className="bg-[#474747] dark:bg-transparent flex justify-between items-center py-3 container">
-      <h1 className="font-bold text-[#f8fafc]">[Title here]</h1>
+      <div />
       <p className="text-white text-lg font-bold tracking-wide">{headerText}</p>
       <div className="flex gap-3">
         <Link href="#">

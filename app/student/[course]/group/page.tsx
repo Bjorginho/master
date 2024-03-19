@@ -26,14 +26,12 @@ export default function Group() {
   const { setHeaderText } = usePageHeader();
 
   useEffect(() => {
-    if (id) {
-      setHeaderText("Group " + id);
-    }
+    if (id) setHeaderText("Group " + id);
   }, [id, setHeaderText]);
 
   return (
     <>
-      <main className="container mx-auto mt-8">
+      <main className="mx-auto mt-8">
         {loading && loadingCourse && <p>Loading...</p>}
         {data && course && (
           <>

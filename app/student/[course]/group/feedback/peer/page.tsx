@@ -1,106 +1,141 @@
+"use client";
+
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Frown, Meh, Smile } from "lucide-react";
+import { usePageHeader } from "@/context/PageHeaderContext";
+import { CircleCheckBig } from "lucide-react";
+import { useEffect, useState } from "react";
+import Feedback from "../page";
+import FeedbackAccordion from "@/components/Accordion/FeedbackAccordion";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
-const upcomingFeedback = [
-  {
-    title: "Feedback on your work",
-    description:
-      "You will receive feedback from your group members on your work. This is a good opportunity to get feedback on your work and to improve your work.",
-  },
-  {
-    title: "Feedback on your work",
-    description:
-      "You will receive feedback from your group members on your work. This is a good opportunity to get feedback on your work and to improve your work.",
-  },
-];
+interface Assignment {
+  assignment: string;
+  isCompleted?: boolean;
+  dueDate?: string;
+  reviews: Feedback[];
+}
 
-const givenFeedback = [
-  {
-    title: "Feedback on your work",
-    description:
-      "You will receive feedback from your group members on your work. This is a good opportunity to get feedback on your work and to improve your work.",
-  },
-  {
-    title: "Feedback on your work",
-    description:
-      "You will receive feedback from your group members on your work. This is a good opportunity to get feedback on your work and to improve your work.",
-  },
-];
+export interface Feedback {
+  title: string;
+  status: "not started" | "completed";
+  description?: string;
+}
 
-export default function Feedback() {
+const assignment5: Assignment = {
+  assignment: "Assignment 5",
+  isCompleted: true,
+  dueDate: "12.05.2024",
+  reviews: [
+    {
+      title: "Review of submission 1",
+      status: "completed",
+      description: "",
+    },
+    {
+      title: "Review of submission 2",
+      status: "completed",
+      description: "",
+    },
+  ],
+};
+
+const assignment4: Assignment = {
+  assignment: "Assignment 4",
+  isCompleted: false,
+  dueDate: "11.05.2024",
+  reviews: [
+    {
+      title: "Review of submission 1",
+      status: "completed",
+      description: "",
+    },
+    {
+      title: "Review of submission 2",
+      status: "not started",
+      description: "",
+    },
+    {
+      title: "Review of submission 3",
+      status: "not started",
+      description: "",
+    },
+  ],
+};
+
+export default function PeerReview() {
+  const { setHeaderText } = usePageHeader();
+
+  useEffect(() => {
+    setHeaderText("Peer Review");
+  }, []);
+
   return (
-    <div className="grid grid-cols-12 gap-4">
-      <Card className="col-span-full lg:col-span-6">
-        <CardHeader>
-          <h2>Upcoming feedback</h2>
-        </CardHeader>
-        <CardContent>
-          {upcomingFeedback.map((feedback, index) => (
-            <FeedbackBox
-              key={index}
-              title={feedback.title}
-              description={feedback.description}
-            />
-          ))}
-        </CardContent>
-      </Card>
-      <Card className="col-span-full lg:col-span-6 h-min">
-        <CardHeader>
-          <h2>Status week 11-13</h2>
-        </CardHeader>
-        <CardContent className="flex justify-between px-12">
-          <StatusWithEmoji value={2.3} description="Participation" />
-          <StatusWithEmoji value={3.1} description="Communication" />
-          <StatusWithEmoji value={1} description="Collaboration" />
-        </CardContent>
-      </Card>
-      <Card className="col-span-full lg:col-span-6">
-        <CardHeader>
-          <h2>Previous feedbacks</h2>
-        </CardHeader>
-        <CardContent>
-          {givenFeedback.map((feedback, index) => (
-            <FeedbackBox
-              key={index}
-              title={feedback.title}
-              description={feedback.description}
-            />
-          ))}
-        </CardContent>
-      </Card>
+    <div className="flex gap-2 ">
+      <FeedbackCard
+        title="Incoming feedback"
+        data={[assignment4, assignment5]}
+      />
+      <FeedbackCard title="Your peer reviews" data={[assignment5]} />
     </div>
   );
 }
 
-const FeedbackBox = (props: { title: string; description: string }) => {
+const FeedbackCard = (props: { title: string; data: Assignment[] }) => {
   return (
-    <Card className="mb-3">
+    <Card className="w-2/4">
       <CardHeader>
-        <h3>{props.title}</h3>
+        <h2>{props.title}</h2>
       </CardHeader>
-      <CardContent>
-        <p>{props.description}</p>
+      <CardContent className="flex flex-col gap-2">
+        {props.data.map((assignment, index) => (
+          <AssignmentCard key={index} assignment={assignment} />
+        ))}
       </CardContent>
     </Card>
   );
 };
 
-const StatusWithEmoji = (props: { value: number; description: string }) => {
-  let icon: React.ReactNode;
-  const iconSize = 48;
-  if (props.value >= 3) {
-    icon = <Smile color="#29ff37" size={iconSize} />;
-  } else if (props.value >= 2) {
-    icon = <Meh color="#ffbe33" size={iconSize} />;
-  } else {
-    icon = <Frown color="#ff3333" size={iconSize} />;
-  }
+const AssignmentCard = (props: { assignment: Assignment }) => {
+  const { assignment, reviews, dueDate, isCompleted } = props.assignment;
+  const [showSubmission, setShowSubmission] = useState(!isCompleted);
 
   return (
-    <div className="flex flex-col items-center">
-      {icon}
-      <p className="text-xl font-bold">{props.value}</p>
-      <p>{props.description}</p>
-    </div>
+    <Card className="bg-[#E8E7DF]">
+      <CardHeader>
+        <div className="flex justify-between items-center">
+          <h1>{assignment}</h1>
+          <div className="flex items-center gap-2 font-semibold">
+            {isCompleted ? (
+              <>
+                <CircleCheckBig className="stroke-bg-green-500" />
+                <p>Complete</p>
+              </>
+            ) : (
+              <div className="flex flex-col items-end">
+                <p>Not finished</p>
+                <p className="font-light text-sm">Missing 2 reviews</p>
+              </div>
+            )}
+          </div>
+        </div>
+        <p className="">
+          due date: <span>{dueDate}</span>
+        </p>
+      </CardHeader>
+      <CardContent>
+        <Button
+          className={cn(!isCompleted && "hidden")}
+          variant={"outline"}
+          size={"sm"}
+          onClick={() => setShowSubmission(!showSubmission)}
+        >
+          {showSubmission ? "Hide" : "Show reviews"}
+        </Button>
+        <div className={cn(!showSubmission && "hidden")}>
+          <FeedbackAccordion feedbackList={reviews} />
+        </div>
+      </CardContent>
+    </Card>
   );
 };
