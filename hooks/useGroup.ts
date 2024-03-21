@@ -1,8 +1,16 @@
+import {
+  Assignment,
+  GroupReview,
+  PeerReview,
+} from "@/app/student/[course]/group/page";
 import { useEffect, useState } from "react";
 
 export interface GroupData {
   id: string;
   members: Member[];
+  assignments?: Assignment[];
+  peerReviews?: PeerReview[];
+  groupReviews?: GroupReview[];
 }
 
 export interface Member {

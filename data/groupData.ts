@@ -1,222 +1,84 @@
 import { GroupData } from "@/hooks/useGroup";
+import {
+  andreas,
+  charles,
+  emily,
+  erna,
+  frede,
+  james,
+  jessica,
+  jonas,
+  jonasHoff,
+  joseph,
+  karen,
+  michael,
+  robert,
+  sarah,
+} from "./members";
+import {
+  assignment1,
+  assignment2,
+  assignment3,
+  assignment4,
+  assignment5,
+} from "./assignments";
+import { peerReview1, peerReview2, peerReview5 } from "./peerReviews";
+import { groupReview1, groupReview2 } from "./groupReviews";
 
 export const it2810Mock: GroupData[] = [
   {
     id: "1",
-    members: [
-      {
-        firstName: "Andreas",
-        lastName: "Bakke",
-        fieldOfStudy: "Informatics",
-        year: 4,
-        email: "andres.bakke@ntnu.no",
-      },
-      {
-        firstName: "Frede",
-        lastName: "Berdal",
-        email: "frede.berdal@ntnu.no",
-      },
-      {
-        firstName: "Jonas",
-        lastName: "Støre",
-        email: "jonas.gahr.støre@ntnu.no",
-      },
-      {
-        firstName: "Erna",
-        lastName: "Solberg",
-        email: "erna.solberg@ntnu.no",
-      },
-      {
-        firstName: "Jonas",
-        lastName: "Hoff",
-        email: "jonas.hoff@ntnu.no",
-      },
-    ],
+    members: [frede, jonas, erna, jonasHoff, andreas],
+    assignments: [assignment1, assignment2, assignment3],
+    peerReviews: [peerReview1, peerReview2],
+    groupReviews: [groupReview1, groupReview2],
   },
   {
     id: "2",
-    members: [
-      {
-        firstName: "Andreas",
-        lastName: "Bakke",
-        email: "",
-      },
-      {
-        firstName: "Frede",
-        lastName: "Berdal",
-        email: "",
-      },
-      {
-        firstName: "Jonas",
-        lastName: "Støre",
-        email: "",
-      },
-      {
-        firstName: "Erna",
-        lastName: "Solberg",
-        email: "",
-      },
-      {
-        firstName: "Jonas",
-        lastName: "Hoff",
-        email: "",
-      },
-    ],
+    members: [emily, michael, jessica, james],
+    assignments: [assignment4],
+    peerReviews: [peerReview1],
+    groupReviews: [groupReview1, groupReview2],
   },
   {
     id: "3",
-    members: [
-      {
-        firstName: "Andreas",
-        lastName: "Bakke",
-        email: "",
-      },
-      {
-        firstName: "Frede",
-        lastName: "Berdal",
-        email: "",
-      },
-      {
-        firstName: "Jonas",
-        lastName: "Støre",
-        email: "",
-      },
-      {
-        firstName: "Erna",
-        lastName: "Solberg",
-        email: "",
-      },
-      {
-        firstName: "Jonas",
-        lastName: "Hoff",
-        email: "",
-      },
-    ],
+    members: [robert, sarah, charles, karen, joseph],
+    assignments: [assignment5],
+    peerReviews: [peerReview2, peerReview1],
+    groupReviews: [groupReview1, groupReview2],
   },
 ];
 
 export const tet4850Mock: GroupData[] = [
   {
     id: "19",
-    members: [
-      {
-        firstName: "Andreas",
-        lastName: "Bakke",
-        email: "",
-      },
-      {
-        firstName: "Frede",
-        lastName: "Berdal",
-        email: "",
-      },
-      {
-        firstName: "Jonas",
-        lastName: "Støre",
-        email: "",
-      },
-      {
-        firstName: "Erna",
-        lastName: "Solberg",
-        email: "",
-      },
-      {
-        firstName: "Jonas",
-        lastName: "Hoff",
-        email: "",
-      },
-    ],
+    members: [frede, erna, jessica, andreas],
+    peerReviews: [peerReview1, peerReview2],
+    assignments: [assignment1, assignment2, assignment3],
+    groupReviews: [groupReview1],
   },
 ];
 
 export const it1901Mock: GroupData[] = [
   {
     id: "1",
-    members: [
-      {
-        firstName: "Andreas",
-        lastName: "Bakke",
-        email: "",
-      },
-      {
-        firstName: "Frede",
-        lastName: "Berdal",
-        email: "",
-      },
-      {
-        firstName: "Jonas",
-        lastName: "Støre",
-        email: "",
-      },
-      {
-        firstName: "Erna",
-        lastName: "Solberg",
-        email: "",
-      },
-      {
-        firstName: "Jonas",
-        lastName: "Hoff",
-        email: "",
-      },
-    ],
+    members: [sarah, karen, jonas, frede, robert],
+    peerReviews: [peerReview2, peerReview5],
+    assignments: [assignment1, assignment2, assignment3],
+    groupReviews: [groupReview1, groupReview2],
   },
   {
     id: "2",
-    members: [
-      {
-        firstName: "Andreas",
-        lastName: "Bakke",
-        email: "",
-      },
-      {
-        firstName: "Frede",
-        lastName: "Berdal",
-        email: "",
-      },
-      {
-        firstName: "Jonas",
-        lastName: "Støre",
-        email: "",
-      },
-      {
-        firstName: "Erna",
-        lastName: "Solberg",
-        email: "",
-      },
-      {
-        firstName: "Jonas",
-        lastName: "Hoff",
-        email: "",
-      },
-    ],
+    members: [james, jonasHoff, jonas, karen, robert],
+    peerReviews: [peerReview1, peerReview2],
+    assignments: [assignment5, peerReview1],
+    groupReviews: [groupReview1, groupReview2],
   },
   {
     id: "3",
-    members: [
-      {
-        firstName: "Andreas",
-        lastName: "Bakke",
-        email: "",
-      },
-      {
-        firstName: "Frede",
-        lastName: "Berdal",
-        email: "",
-      },
-      {
-        firstName: "Jonas",
-        lastName: "Støre",
-        email: "",
-      },
-      {
-        firstName: "Erna",
-        lastName: "Solberg",
-        email: "",
-      },
-      {
-        firstName: "Jonas",
-        lastName: "Hoff",
-        email: "",
-      },
-    ],
+    members: [jessica, sarah, michael, emily, erna],
+    peerReviews: [peerReview1, peerReview2],
+    assignments: [assignment1, assignment2, assignment3],
+    groupReviews: [groupReview1, groupReview2],
   },
 ];

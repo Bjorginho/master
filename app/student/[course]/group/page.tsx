@@ -7,7 +7,13 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { FileText, MessageSquareMore, UsersRound } from "lucide-react";
+import {
+  FileText,
+  LucideIcon,
+  MessageSquareMore,
+  UserRound,
+  UsersRound,
+} from "lucide-react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import {
   Accordion,
@@ -20,6 +26,7 @@ import { usePageHeader } from "@/context/PageHeaderContext";
 import { Button } from "@/components/ui/button";
 import { useStudentData } from "@/context/StudentContext";
 import Link from "next/link";
+import PeerReview from "./peer/page";
 
 export default function Group() {
   const pathname = usePathname();
@@ -69,17 +76,26 @@ export default function Group() {
               </Card>
               <div className="col-span-6 place-self-center w-full h-full flex flex-col gap-4">
                 <h2 className="font-semibold text-center">Upcoming tasks</h2>
-                <div className="flex gap-4 justify-center">
-                  <Task
-                    kind={"assignment"}
-                    name={"Assignment 5"}
-                    date={new Date()}
-                  />
-                  <Task
-                    kind={"peer review"}
-                    name={"Peer review 3"}
-                    date={new Date()}
-                  />
+                <div className="grid grid-cols-4 gap-2 ">
+                  {groupData?.peerReviews?.map((pr, index) => (
+                    <Test key={index} kind="peer" task={pr} Icon={UserRound} />
+                  ))}
+                  {groupData?.assignments?.map((assignment, index) => (
+                    <Test
+                      key={index + 99}
+                      kind="assignment"
+                      task={assignment}
+                      Icon={FileText}
+                    />
+                  ))}
+                  {groupData?.groupReviews?.map((gr, index) => (
+                    <Test
+                      key={index + 999}
+                      kind="group"
+                      task={gr}
+                      Icon={UsersRound}
+                    />
+                  ))}
                 </div>
               </div>
 
@@ -160,26 +176,57 @@ export default function Group() {
   );
 }
 
-const Task = (props: {
-  kind: "assignment" | "peer review";
+export interface Assignment {
   name: string;
-  date: Date;
+  dueDate: Date;
+}
+
+export interface PeerReview {
+  name: string;
+  dueDate: Date;
+}
+
+export interface GroupReview {
+  name: string;
+  dueDate: Date;
+}
+
+const Test = ({
+  kind,
+  task,
+  Icon,
+}: {
+  kind: "peer" | "assignment" | "group";
+  task: PeerReview | Assignment | GroupReview;
+  Icon: LucideIcon;
 }) => {
-  const renderIcon = () => {
-    switch (props.kind) {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const handleClick = () => {
+    switch (kind) {
+      case "peer":
+        router.push(pathname + "/peer");
+        break;
       case "assignment":
-        return <FileText size={48} />;
-      case "peer review":
-        return <UsersRound size={48} />;
+        router.push(pathname + "/assignment");
+        break;
+      case "group":
+        router.push(pathname + "/group");
+        console.log("group");
+        break;
     }
   };
 
   return (
-    <div className="flex flex-col gap-2 items-center">
-      {renderIcon()}
+    <div
+      className="flex flex-col gap-2 items-center hover:bg-gray-100 hover:shadow-md p-2 rounded-md cursor-pointer"
+      onClick={handleClick}
+    >
+      <Icon size={48} />
       <div className="flex flex-col items-center ">
-        <h3 className="font-semibold ">{props.name}</h3>
-        <p className="text-sm">{props.date.toLocaleDateString()}</p>
+        <h3 className="font-semibold text-sm">{task.name}</h3>
+        <p className="text-sm">{task.dueDate.toLocaleDateString()}</p>
         <p className="text-sm">{"16:30"}</p>
       </div>
     </div>
