@@ -1,4 +1,4 @@
-import { Feedback } from "@/app/student/[course]/group/feedback/peer/page";
+"use client";
 import {
   Accordion,
   AccordionContent,
@@ -6,6 +6,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "../ui/button";
+import { usePathname, useRouter } from "next/navigation";
+import { Feedback } from "@/app/student/[course]/group/feedback/peer/page";
 
 const FeedbackAccordion = (props: { feedbackList: Feedback[] }) => {
   const feedbackList = props.feedbackList;
@@ -24,20 +26,33 @@ const FeedbackAccordion = (props: { feedbackList: Feedback[] }) => {
                 <div className="flex flex-col gap-2">
                   <p>You have not yet started with this review</p>
                 </div>
-                <Button size={"sm"}>Go to review</Button>
+                <ReviewButton />
               </div>
             ) : (
               <div className="flex items-center justify-between">
                 <p>Reviewed: 07.05.2024</p>
-                <Button variant={"outline"} size={"sm"}>
-                  Go to review
-                </Button>
+                <ReviewButton />
               </div>
             )}
           </AccordionContent>
         </AccordionItem>
       ))}
     </Accordion>
+  );
+};
+
+const ReviewButton = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  function handleClick(): void {
+    router.push(pathname + "/review");
+  }
+
+  return (
+    <Button variant={"outline"} size={"sm"} onClick={handleClick}>
+      Go to review
+    </Button>
   );
 };
 

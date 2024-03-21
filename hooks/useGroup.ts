@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 
 export interface GroupData {
   id: string;
-  courseId: string;
   members: Member[];
 }
 
-interface Member {
+export interface Member {
   firstName: string;
   lastName: string;
+  fieldOfStudy?: string;
+  year?: number;
+  email: string;
 }
 
 export const useGroup = (courseId: string, userId: string) => {

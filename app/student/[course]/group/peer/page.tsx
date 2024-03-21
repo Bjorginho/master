@@ -8,6 +8,7 @@ import Feedback from "../page";
 import FeedbackAccordion from "@/components/Accordion/FeedbackAccordion";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { usePathname, useRouter } from "next/navigation";
 
 interface Assignment {
   assignment: string;
@@ -87,10 +88,12 @@ const FeedbackCard = (props: { title: string; data: Assignment[] }) => {
       <CardHeader>
         <h2>{props.title}</h2>
       </CardHeader>
-      <CardContent className="flex flex-col gap-2">
-        {props.data.map((assignment, index) => (
-          <AssignmentCard key={index} assignment={assignment} />
-        ))}
+      <CardContent>
+        <div className="flex flex-col gap-2 bg-white p-6 rounded-md">
+          {props.data.map((assignment, index) => (
+            <AssignmentCard key={index} assignment={assignment} />
+          ))}
+        </div>
       </CardContent>
     </Card>
   );

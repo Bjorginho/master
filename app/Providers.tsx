@@ -4,6 +4,8 @@ import { UserContext } from "../context/UserContext";
 import { Course, User } from "../types/types";
 import { ThemeProvider } from "@/components/theme-provider";
 import { useState } from "react";
+import { GroupData } from "@/hooks/useGroup";
+import { StudentContext } from "@/context/StudentContext";
 
 const defaultUser: User = {
   name: "John Doe",
@@ -37,8 +39,8 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="system"
-      enableSystem
+      defaultTheme="light"
+      enableSystem={false}
       disableTransitionOnChange
     >
       <PageHeaderContext.Provider
@@ -51,5 +53,34 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
         </UserContext.Provider>
       </PageHeaderContext.Provider>
     </ThemeProvider>
+  );
+};
+
+export const AdminProviders = ({ children }: { children: React.ReactNode }) => {
+  return <>{children}</>;
+};
+
+export const StudentProviders = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const [currentCourse, setCurrentCourse] = useState<string>("");
+  const [groupData, setGroupData] = useState<GroupData>({
+    id: "",
+    members: [],
+  });
+
+  return (
+    <StudentContext.Provider
+      value={{
+        course: currentCourse,
+        setCurrentCourse,
+        groupData,
+        setGroupData,
+      }}
+    >
+      {children}
+    </StudentContext.Provider>
   );
 };

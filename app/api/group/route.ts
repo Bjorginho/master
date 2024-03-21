@@ -3,13 +3,32 @@ import { NextRequest, NextResponse } from "next/server";
 
 const data: GroupData = {
   id: "75",
-  courseId: "TETRIS101",
   members: [
-    { firstName: "Andreas", lastName: "Berg" },
-    { firstName: "John", lastName: "Wick" },
-    { firstName: "Frede", lastName: "Berdal" },
-    { firstName: "Petter", lastName: "Lauvrak" },
-    { firstName: "Jacob", lastName: "Theisen" },
+    {
+      firstName: "Andreas",
+      lastName: "Berg",
+      email: "",
+    },
+    {
+      firstName: "John",
+      lastName: "Wick",
+      email: "",
+    },
+    {
+      firstName: "Frede",
+      lastName: "Berdal",
+      email: "",
+    },
+    {
+      firstName: "Petter",
+      lastName: "Lauvrak",
+      email: "",
+    },
+    {
+      firstName: "Jacob",
+      lastName: "Theisen",
+      email: "",
+    },
   ],
 };
 

@@ -1,10 +1,9 @@
 "use client";
 
 import Course from "@/components/Card/Course";
-import Header from "@/components/Header";
 import { useUser } from "@/context/UserContext";
 
-export default function Home() {
+export default function Courses() {
   const { courses } = useUser();
 
   return (

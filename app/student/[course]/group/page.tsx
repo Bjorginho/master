@@ -1,12 +1,14 @@
 "use client";
 import NotificationButton from "@/components/NotificationButton";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { useUser } from "@/context/UserContext";
-import { useCourse } from "@/hooks/useCourse";
-import { useGroup } from "@/hooks/useGroup";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import { FileText, MessageSquareMore, UsersRound } from "lucide-react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import {
   Accordion,
   AccordionContent,
@@ -15,15 +17,17 @@ import {
 } from "@/components/ui/accordion";
 import { useEffect } from "react";
 import { usePageHeader } from "@/context/PageHeaderContext";
+import { Button } from "@/components/ui/button";
+import { useStudentData } from "@/context/StudentContext";
+import Link from "next/link";
 
 export default function Group() {
   const pathname = usePathname();
-  const { user } = useUser();
-  const { data, loading } = useGroup(pathname, user.name);
-  const { course, loadingCourse } = useCourse(pathname);
+  const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const { setHeaderText } = usePageHeader();
+  const { groupData, course: currentCourse } = useStudentData();
 
   useEffect(() => {
     if (id) setHeaderText("Group " + id);
@@ -32,8 +36,7 @@ export default function Group() {
   return (
     <>
       <main className="mx-auto mt-8">
-        {loading && loadingCourse && <p>Loading...</p>}
-        {data && course && (
+        {groupData && currentCourse && (
           <>
             <div className="grid grid-cols-12 gap-6 my-8">
               <Card className="col-span-6">
@@ -41,30 +44,26 @@ export default function Group() {
                   <h2 className="text-center font-bold ">Status Group</h2>
                 </CardHeader>
                 <CardContent className="flex items-stretch justify-between">
+                  <NotificationButton num={null} text={"Chat"} href="/chat" />
                   <NotificationButton
-                    notificationNumber={null}
-                    spanText={"Chat"}
-                    href="/chat"
-                  />
-                  <NotificationButton
-                    notificationNumber={null}
-                    spanText={"Calendar"}
+                    num={null}
+                    text={"Calendar"}
                     href="/calendar"
                   />
                   <NotificationButton
-                    notificationNumber={4}
-                    spanText={"Feedback"}
-                    href="/feedback"
-                  />
-                  <NotificationButton
-                    notificationNumber={4}
-                    spanText={"Contract"}
+                    num={4}
+                    text={"Contract"}
                     href="/contract"
                   />
                   <NotificationButton
-                    notificationNumber={4}
-                    spanText={"Report"}
-                    href="/report"
+                    num={4}
+                    text={"Peer Reviews"}
+                    href="/peer"
+                  />
+                  <NotificationButton
+                    num={4}
+                    text={"Group Reviews"}
+                    href="/group"
                   />
                 </CardContent>
               </Card>
@@ -89,7 +88,7 @@ export default function Group() {
                   <h2 className="text-center font-bold">Group members</h2>
                 </CardHeader>
                 <CardContent className="flex items-stretch justify-between">
-                  {data.members.map((member, index) => (
+                  {groupData.members.map((member, index) => (
                     <div
                       key={index}
                       className="flex flex-col items-center gap-2"
@@ -104,10 +103,19 @@ export default function Group() {
                     </div>
                   ))}
                 </CardContent>
+                <CardFooter className="flex justify-end">
+                  <Button
+                    variant="ghost"
+                    className="text-sm"
+                    onClick={() => router.push(pathname + "/members")}
+                  >
+                    Go to group
+                  </Button>
+                </CardFooter>
               </Card>
               <div className="col-span-6">
                 <Card>
-                  <CardHeader className="">
+                  <CardHeader>
                     <div className="flex justify-between items-center gap-4">
                       <MessageSquareMore />
                       <h2 className="flex-grow font-bold">
@@ -115,7 +123,7 @@ export default function Group() {
                       </h2>
                     </div>
                   </CardHeader>
-                  <CardContent className="">
+                  <CardContent>
                     <Accordion className="grow" type="single" collapsible>
                       <AccordionItem value="item-1">
                         <AccordionTrigger>Update Assignment 5</AccordionTrigger>
@@ -136,6 +144,14 @@ export default function Group() {
                   </CardContent>
                 </Card>
               </div>
+            </div>
+            <div className="flex justify-center mb-4">
+              <Link href={pathname + "/report"}>
+                <p className="text-xs">
+                  Do you experience any issues with the group?{" "}
+                  <span className="underline">Report it here.</span>
+                </p>
+              </Link>
             </div>
           </>
         )}

@@ -8,17 +8,18 @@ import {
   MessageSquareWarning,
   MessagesSquare,
   ScrollText,
-  Sticker,
+  UsersRound,
+  UserRound,
 } from "lucide-react";
 
 interface Props {
-  notificationNumber: number | null;
-  spanText: string;
-  href: "/chat" | "/feedback" | "/contract" | "/report" | "/calendar";
+  num: number | null;
+  text: string;
+  href: "/chat" | "/contract" | "/report" | "/calendar" | "/peer" | "/group";
 }
 
 const NotificationButton = (props: Props) => {
-  const { notificationNumber, spanText, href } = props;
+  const { num: notificationNumber, text: spanText, href } = props;
   const pathname = usePathname();
   const router = useRouter();
 
@@ -28,8 +29,11 @@ const NotificationButton = (props: Props) => {
       case "/chat":
         Icon = MessagesSquare;
         break;
-      case "/feedback":
-        Icon = Sticker;
+      case "/peer":
+        Icon = UserRound;
+        break;
+      case "/group":
+        Icon = UsersRound;
         break;
       case "/contract":
         Icon = ScrollText;

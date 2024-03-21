@@ -15,7 +15,6 @@ const Header = () => {
     const currentCourse = courses.find((course) =>
       pathname.startsWith(`/student/${course.courseCode}`)
     );
-    console.log(currentCourse);
     if (currentCourse) {
       setHeaderText(currentCourse.courseCode + " - " + currentCourse.name);
     } else {
@@ -33,17 +32,21 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-[#474747] dark:bg-transparent flex justify-between items-center py-3 container">
-      <div />
-      <p className="text-white text-lg font-bold tracking-wide">{headerText}</p>
-      <div className="flex gap-3">
-        <Link href="#">
-          <Avatar>
-            <AvatarFallback>{getInitials()}</AvatarFallback>
-          </Avatar>
-        </Link>
-      </div>
-    </header>
+    <div className="bg-[#474747] dark:bg-transparent">
+      <header className=" flex justify-between items-center py-3 container">
+        <div />
+        <p className="text-white text-lg font-bold tracking-wide">
+          {headerText}
+        </p>
+        <div className="flex gap-3">
+          <Link href="#">
+            <Avatar>
+              <AvatarFallback>{getInitials()}</AvatarFallback>
+            </Avatar>
+          </Link>
+        </div>
+      </header>
+    </div>
   );
 };
 
