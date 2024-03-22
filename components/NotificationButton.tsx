@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 
 interface Props {
+  disabled?: boolean;
   num: number | null;
   text: string;
   href: "/chat" | "/contract" | "/report" | "/calendar" | "/peer" | "/group";
@@ -50,6 +51,7 @@ const NotificationButton = (props: Props) => {
 
   return (
     <Button
+      disabled={props.disabled}
       variant="ghost"
       onClick={() => router.push(pathname + href)}
       className="flex flex-col w-fit h-fit relative"

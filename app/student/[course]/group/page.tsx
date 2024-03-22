@@ -51,7 +51,12 @@ export default function Group() {
                   <h2 className="text-center font-bold ">Status Group</h2>
                 </CardHeader>
                 <CardContent className="flex items-stretch justify-between">
-                  <NotificationButton num={null} text={"Chat"} href="/chat" />
+                  <NotificationButton
+                    disabled
+                    num={null}
+                    text={"Chat"}
+                    href="/chat"
+                  />
                   <NotificationButton
                     num={null}
                     text={"Calendar"}
