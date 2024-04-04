@@ -27,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import { useStudentData } from "@/context/StudentContext";
 import Link from "next/link";
 import PeerReview from "./peer/page";
+import ChannelButton from "@/components/Button/Channel";
 
 export default function Group() {
   const pathname = usePathname();
@@ -104,7 +105,23 @@ export default function Group() {
                 </div>
               </div>
 
-              <Card className="col-span-6 h-fit">
+              <Card className="col-span-4 h-fit">
+                <CardHeader>
+                  <h2 className="text-center font-bold">Channels</h2>
+                </CardHeader>
+                <CardContent className="flex justify-center gap-2">
+                  {groupData.links?.map((channel, index) => (
+                    <ChannelButton key={index} channel={channel} />
+                  ))}
+                </CardContent>
+                <CardFooter className="justify-center">
+                  <Link href={pathname + "/channels"}>
+                    <p className="text-sm">Manage channels</p>
+                  </Link>
+                </CardFooter>
+              </Card>
+
+              <Card className="col-span-4 h-fit">
                 <CardHeader>
                   <h2 className="text-center font-bold">Group members</h2>
                 </CardHeader>
@@ -124,47 +141,46 @@ export default function Group() {
                     </div>
                   ))}
                 </CardContent>
-                <CardFooter className="flex justify-end">
-                  <Button
-                    variant="ghost"
-                    className="text-sm"
-                    onClick={() => router.push(pathname + "/members")}
-                  >
-                    Go to group
-                  </Button>
+                <CardFooter className="justify-center">
+                  <Link href={pathname + "/members"}>
+                    <p className="text-sm">Go to group page</p>
+                  </Link>
                 </CardFooter>
               </Card>
-              <div className="col-span-6">
-                <Card>
-                  <CardHeader>
-                    <div className="flex justify-between items-center gap-4">
-                      <MessageSquareMore />
-                      <h2 className="flex-grow font-bold">
-                        Messages from administrator
-                      </h2>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <Accordion className="grow" type="single" collapsible>
-                      <AccordionItem value="item-1">
-                        <AccordionTrigger>Update Assignment 5</AccordionTrigger>
-                        <AccordionContent>
-                          Some changes are made in the description. Please have
-                          a look, I have updated the deadline with 2 more days.
-                        </AccordionContent>
-                      </AccordionItem>
-                      <AccordionItem value="item-2">
-                        <AccordionTrigger>
-                          Remember to evaluate before the holiday
-                        </AccordionTrigger>
-                        <AccordionContent>
-                          Yes. It adheres to the WAI-ARIA design pattern.
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
-                  </CardContent>
-                </Card>
-              </div>
+              <Card className="col-span-4">
+                <CardHeader>
+                  <div className="flex justify-between items-center gap-4">
+                    <MessageSquareMore />
+                    <h2 className="flex-grow font-bold">
+                      Messages from administrator
+                    </h2>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <Accordion className="grow" type="single" collapsible>
+                    <AccordionItem value="item-1">
+                      <AccordionTrigger>Update Assignment 5</AccordionTrigger>
+                      <AccordionContent>
+                        Some changes are made in the description. Please have a
+                        look, I have updated the deadline with 2 more days.
+                      </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="item-2">
+                      <AccordionTrigger>
+                        Remember to evaluate before the holiday
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        Yes. It adheres to the WAI-ARIA design pattern.
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                </CardContent>
+                <CardFooter className="justify-center">
+                  <Link href={pathname + "/members"}>
+                    <p className="text-sm">View all announcements</p>
+                  </Link>
+                </CardFooter>
+              </Card>
             </div>
             <div className="flex justify-center mb-4">
               <Link href={pathname + "/report"}>
