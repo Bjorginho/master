@@ -11,6 +11,12 @@ export interface GroupData {
   assignments?: Assignment[];
   peerReviews?: PeerReview[];
   groupReviews?: GroupReview[];
+  links?: Channel[];
+}
+
+export interface Channel {
+  name: "GitLab" | "GitHub" | "Discord" | "Teams";
+  url: string;
 }
 
 export interface Member {

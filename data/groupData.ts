@@ -32,6 +32,12 @@ export const it2810Mock: GroupData[] = [
     assignments: [assignment1, assignment2, assignment3],
     peerReviews: [peerReview1, peerReview2],
     groupReviews: [groupReview1, groupReview2],
+    links: [
+      { name: "GitLab", url: "https://www.about.gitlab.com/" },
+      { name: "GitHub", url: "https://github.com/" },
+      { name: "Discord", url: "https://discord.com/" },
+      { name: "Teams", url: "https://www.microsoft.com/nb-no" },
+    ],
   },
   {
     id: "2",
