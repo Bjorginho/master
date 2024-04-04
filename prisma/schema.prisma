@@ -26,13 +26,25 @@ model Course {
 }
 
 model Class {
-  id         Int            @id @default(autoincrement())
-  year       Int
-  semester   SEMESTER
-  course     Course         @relation(fields: [courseCode], references: [code])
-  courseCode String
-  students   StudentClass[]
-  groups     Group[]
+  id            Int            @id @default(autoincrement())
+  year          Int
+  semester      SEMESTER
+  course        Course         @relation(fields: [courseCode], references: [code])
+  courseCode    String
+  students      StudentClass[]
+  groups        Group[]
+  announcements Announcement[]
+}
+
+model Announcement {
+  id Int @id @default(autoincrement())
+
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  author    String
+  class     Class?   @relation(fields: [classId], references: [id])
+  classId   Int?
 }
 
 model StudentClass {

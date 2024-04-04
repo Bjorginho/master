@@ -29,9 +29,9 @@ export const it2810Mock: GroupData[] = [
   {
     id: "1",
     members: [frede, jonas, erna, jonasHoff, andreas],
-    assignments: [assignment1, assignment2, assignment3],
-    peerReviews: [peerReview1, peerReview2],
-    groupReviews: [groupReview1, groupReview2],
+    assignments: [assignment1, assignment3],
+    peerReviews: [peerReview1],
+    groupReviews: [groupReview1],
     links: [
       { name: "GitLab", url: "https://www.about.gitlab.com/" },
       { name: "GitHub", url: "https://github.com/" },
@@ -45,13 +45,15 @@ export const it2810Mock: GroupData[] = [
     assignments: [assignment4],
     peerReviews: [peerReview1],
     groupReviews: [groupReview1, groupReview2],
+    links: [],
   },
   {
     id: "3",
     members: [robert, sarah, charles, karen, joseph],
     assignments: [assignment5],
     peerReviews: [peerReview2, peerReview1],
-    groupReviews: [groupReview1, groupReview2],
+    groupReviews: [],
+    links: [],
   },
 ];
 
@@ -62,6 +64,7 @@ export const tet4850Mock: GroupData[] = [
     peerReviews: [peerReview1, peerReview2],
     assignments: [assignment1, assignment2, assignment3],
     groupReviews: [groupReview1],
+    links: [],
   },
 ];
 
@@ -72,6 +75,7 @@ export const it1901Mock: GroupData[] = [
     peerReviews: [peerReview2, peerReview5],
     assignments: [assignment1, assignment2, assignment3],
     groupReviews: [groupReview1, groupReview2],
+    links: [],
   },
   {
     id: "2",
@@ -79,6 +83,7 @@ export const it1901Mock: GroupData[] = [
     peerReviews: [peerReview1, peerReview2],
     assignments: [assignment5, peerReview1],
     groupReviews: [groupReview1, groupReview2],
+    links: [],
   },
   {
     id: "3",
@@ -86,5 +91,6 @@ export const it1901Mock: GroupData[] = [
     peerReviews: [peerReview1, peerReview2],
     assignments: [assignment1, assignment2, assignment3],
     groupReviews: [groupReview1, groupReview2],
+    links: [],
   },
 ];

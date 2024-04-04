@@ -11,7 +11,7 @@ export interface GroupData {
   assignments?: Assignment[];
   peerReviews?: PeerReview[];
   groupReviews?: GroupReview[];
-  links?: Channel[];
+  links: Channel[];
 }
 
 export interface Channel {

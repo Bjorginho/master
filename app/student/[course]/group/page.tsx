@@ -14,37 +14,57 @@ import {
   UserRound,
   UsersRound,
 } from "lucide-react";
-import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import {
+  usePathname,
+  useSearchParams,
+  useRouter,
+  useParams,
+} from "next/navigation";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePageHeader } from "@/context/PageHeaderContext";
-import { Button } from "@/components/ui/button";
 import { useStudentData } from "@/context/StudentContext";
 import Link from "next/link";
 import PeerReview from "./peer/page";
 import ChannelButton from "@/components/Button/Channel";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Announcement } from "@prisma/client";
 
 export default function Group() {
   const pathname = usePathname();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
+  const id = useSearchParams().get("id");
+  const params = useParams<{ course: string }>();
   const { setHeaderText } = usePageHeader();
-  const { groupData, course: currentCourse } = useStudentData();
+  const { groupData } = useStudentData();
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+
+  const fetchAnnouncements = async () => {
+    console.log("fetching announcements");
+    const res = await fetch(`/api/announcements?courseId=${params.course}`);
+    const data = await res.json();
+    setAnnouncements(data);
+  };
 
   useEffect(() => {
     if (id) setHeaderText("Group " + id);
   }, [id, setHeaderText]);
 
+  useEffect(() => {
+    if (params.course && announcements.length === 0) {
+      fetchAnnouncements();
+    }
+  }, []);
+
   return (
     <>
       <main className="mx-auto mt-8">
-        {groupData && currentCourse && (
+        {groupData && (
           <>
             <div className="grid grid-cols-12 gap-6 my-8">
               <Card className="col-span-6">
@@ -105,23 +125,36 @@ export default function Group() {
                 </div>
               </div>
 
-              <Card className="col-span-4 h-fit">
+              <Card className="col-span-4 h-full">
                 <CardHeader>
                   <h2 className="text-center font-bold">Channels</h2>
                 </CardHeader>
                 <CardContent className="flex justify-center gap-2">
+                  {groupData.links.length === 0 && (
+                    <div className="flex flex-col gap-2 items-center">
+                      <p>No linked channels!</p>
+                      <Button variant={"outline"} asChild>
+                        <Link href={pathname + "/channels"}>
+                          Link channel here
+                        </Link>
+                      </Button>
+                    </div>
+                  )}
                   {groupData.links?.map((channel, index) => (
                     <ChannelButton key={index} channel={channel} />
                   ))}
                 </CardContent>
                 <CardFooter className="justify-center">
-                  <Link href={pathname + "/channels"}>
+                  <Link
+                    href={pathname + "/channels"}
+                    className={cn(groupData.links.length === 0 && "hidden")}
+                  >
                     <p className="text-sm">Manage channels</p>
                   </Link>
                 </CardFooter>
               </Card>
 
-              <Card className="col-span-4 h-fit">
+              <Card className="col-span-4 h-full">
                 <CardHeader>
                   <h2 className="text-center font-bold">Group members</h2>
                 </CardHeader>
@@ -147,7 +180,7 @@ export default function Group() {
                   </Link>
                 </CardFooter>
               </Card>
-              <Card className="col-span-4">
+              <Card className="col-span-4 h-full">
                 <CardHeader>
                   <div className="flex justify-between items-center gap-4">
                     <MessageSquareMore />
@@ -158,25 +191,23 @@ export default function Group() {
                 </CardHeader>
                 <CardContent>
                   <Accordion className="grow" type="single" collapsible>
-                    <AccordionItem value="item-1">
-                      <AccordionTrigger>Update Assignment 5</AccordionTrigger>
-                      <AccordionContent>
-                        Some changes are made in the description. Please have a
-                        look, I have updated the deadline with 2 more days.
-                      </AccordionContent>
-                    </AccordionItem>
-                    <AccordionItem value="item-2">
-                      <AccordionTrigger>
-                        Remember to evaluate before the holiday
-                      </AccordionTrigger>
-                      <AccordionContent>
-                        Yes. It adheres to the WAI-ARIA design pattern.
-                      </AccordionContent>
-                    </AccordionItem>
+                    {announcements.slice(0, 2).map((announcement, index) => (
+                      <AccordionItem
+                        key={index}
+                        value={announcement.id.toString()}
+                      >
+                        <AccordionTrigger>
+                          <h3>{announcement.title}</h3>
+                        </AccordionTrigger>
+                        <AccordionContent>
+                          <p>{announcement.content}</p>
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
                   </Accordion>
                 </CardContent>
                 <CardFooter className="justify-center">
-                  <Link href={pathname + "/members"}>
+                  <Link href={pathname + "/announcements"}>
                     <p className="text-sm">View all announcements</p>
                   </Link>
                 </CardFooter>
