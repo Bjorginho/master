@@ -7,12 +7,23 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model User {
+  id        Int    @id @default(autoincrement())
+  firstName String
+  lastName  String
+
+  student Student?
+}
+
 model Student {
   id        Int            @id @default(autoincrement())
   email     String         @unique
   firstName String
   lastName  String
   classes   StudentClass[]
+
+  user   User? @relation(fields: [userId], references: [id])
+  userId Int?  @unique
 }
 
 model Course {

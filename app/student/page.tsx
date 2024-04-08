@@ -2,9 +2,32 @@
 
 import Course from "@/components/Card/Course";
 import { useUser } from "@/context/UserContext";
+import { Student, User } from "@prisma/client";
+import { useEffect, useState } from "react";
 
 export default function Courses() {
   const { courses } = useUser();
+  const [student, setStudent] = useState<Student | null>(null);
+
+  async function fetchUserStudentData() {
+    const response = await fetch("/api/user?firstName=Andre&lastName=Bjørgum", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      setStudent(data);
+    }
+  }
+
+  useEffect(() => {
+    if (!student) {
+      fetchUserStudentData();
+    }
+  }, []);
 
   return (
     <>
