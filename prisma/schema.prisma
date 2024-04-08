@@ -66,13 +66,39 @@ model StudentClass {
 }
 
 model GroupMember {
-  id             Int            @id @default(autoincrement())
-  studentClass   StudentClass   @relation(fields: [studentId], references: [id])
-  studentId      Int
-  group          Group          @relation(fields: [groupId], references: [id])
-  groupId        Int
-  contractSigned GroupContract? @relation(fields: [contractId], references: [id])
-  contractId     Int?
+  id                Int                @id @default(autoincrement())
+  studentClass      StudentClass       @relation(fields: [studentId], references: [id])
+  studentId         Int
+  group             Group              @relation(fields: [groupId], references: [id])
+  groupId           Int
+  contractSigned    GroupContract?     @relation(fields: [contractId], references: [id])
+  contractId        Int?
+  assignmentReviews AssignmentReview[]
+  groupReviews      GroupReview[]
+}
+
+model AssignmentReview {
+  id           Int                 @id @default(autoincrement())
+  reviewer     GroupMember         @relation(fields: [reviewerId], references: [id])
+  reviewerId   Int
+  assignment   DeliveredAssignment @relation(fields: [assignmentId], references: [id])
+  assignmentId Int
+  feedback     String?
+  grade        Float?
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime?           @updatedAt
+  dueDate      DateTime
+  isReviewed   Boolean             @default(false)
+}
+
+model GroupReview {
+  id         Int         @id @default(autoincrement())
+  reviewer   GroupMember @relation(fields: [reviewerId], references: [id])
+  reviewerId Int
+  feedback   String
+  dueDate    DateTime
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime?   @updatedAt
 }
 
 model Group {
@@ -97,14 +123,15 @@ model GroupContract {
 }
 
 model DeliveredAssignment {
-  id           Int        @id @default(autoincrement())
-  group        Group      @relation(fields: [groupId], references: [id])
+  id           Int                @id @default(autoincrement())
+  group        Group              @relation(fields: [groupId], references: [id])
   groupId      Int
-  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  assignment   Assignment         @relation(fields: [assignmentId], references: [id])
   assignmentId Int
-  deliveredAt  DateTime?  @default(now())
+  deliveredAt  DateTime?          @default(now())
   grade        Float?
   feedback     String?
+  reviews      AssignmentReview[]
 }
 
 model Assignment {
