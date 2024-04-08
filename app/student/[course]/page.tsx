@@ -6,7 +6,7 @@ import { usePageHeader } from "@/context/PageHeaderContext";
 import { useStudentData } from "@/context/StudentContext";
 import { it1901Mock, it2810Mock, tet4850Mock } from "@/data/groupData";
 import { GroupData } from "@/hooks/useGroup";
-import { set } from "date-fns";
+import { GroupMember } from "@prisma/client";
 import {
   redirect,
   useParams,
@@ -24,8 +24,7 @@ const Course = () => {
   const [studentId, setStudentId] = useState<string | null>(null);
 
   const { setHeaderText } = usePageHeader();
-  const { course, setGroupData } = useStudentData();
-  const [groups, setGroups] = useState<GroupData[]>([]);
+  const [groups, setGroups] = useState<GroupMember[]>([]);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -41,21 +40,23 @@ const Course = () => {
     }
   }, [params, searchParams]);
 
-  // useEffect(() => {
-  //   if (course === "IT2810") setGroups(it2810Mock);
-  //   else if (course === "TET4854") setGroups(tet4850Mock);
-  //   else if (course === "IT1901") setGroups(it1901Mock);
-  //   else
-  //     setGroups([
-  //       { id: "1", members: [{ firstName: "Andreas", lastName: "Bakke" }] },
-  //     ]);
-  // }, [course]);
+  async function fetchGroups() {
+    const response = await fetch(
+      `/api/group?courseId=${courseCode}&studentId=${studentId}`
+    );
+    const data = await response.json();
+    setGroups(data);
+  }
+
+  useEffect(() => {
+    if (courseCode && studentId) {
+      fetchGroups();
+    }
+  }, [courseCode, studentId]);
 
   useEffect(() => {
     if (groups.length === 1) {
-      const group = groups[0];
-      setGroupData(group);
-      redirect(pathname + "/group?id=" + group.id);
+      redirect(pathname + "/group?id=" + groups[0].id);
     }
   }, [groups]);
 
@@ -71,13 +72,11 @@ const Course = () => {
   );
 };
 
-const GroupCard = ({ group }: { group: GroupData }) => {
+const GroupCard = ({ group }: { group: GroupMember }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const { setGroupData } = useStudentData();
 
   const handleClick = () => {
-    setGroupData(group);
     router.push(pathname + "/group?id=" + group.id);
   };
 

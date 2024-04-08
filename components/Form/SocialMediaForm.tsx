@@ -1,6 +1,5 @@
 "use client";
 
-import { Channel } from "@/hooks/useGroup";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -18,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useState } from "react";
 import { ExternalLink } from "lucide-react";
+import { Channel } from "@prisma/client";
 
 const formSchema = z.object({
   url: z.string().url(),

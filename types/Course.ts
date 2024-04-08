@@ -1,11 +1,5 @@
 import { Course } from "@prisma/client";
 
-interface Employee {
-  name: string;
-  department: string;
-  email: string;
-}
-
 export const courses: Course[] = [
   {
     id: 1,

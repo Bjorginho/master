@@ -1,6 +1,6 @@
-import { Channel } from "@/hooks/useGroup";
 import { Button } from "../ui/button";
 import SocialMediaIcon from "../Icon/SocialMediaIcon";
+import { Channel } from "@prisma/client";
 
 const ChannelButton = ({ channel }: { channel: Channel }) => {
   return (

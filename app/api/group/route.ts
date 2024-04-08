@@ -1,15 +1,34 @@
+import { prisma } from "@/prisma/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const courseId = searchParams.get("courseId");
-  const userId = searchParams.get("groupId");
+  const studentIdStr = searchParams.get("studentId");
 
-  if (!courseId || !userId)
+  if (!courseId || !studentIdStr)
     return Response.json(
       { message: "Missing required parameters" },
       { status: 400 }
     );
 
-  return NextResponse.json({ message: "Nothing here" });
+  const studentId = parseInt(studentIdStr);
+
+  const groups = await prisma.group.findMany({
+    where: {
+      AND: [
+        { class: { courseCode: courseId } }, // Filter by courseCode
+        { students: { some: { studentId: studentId } } }, // Filter by studentId
+      ],
+    },
+    include: {
+      class: {
+        include: {
+          course: true,
+        },
+      },
+    },
+  });
+
+  return NextResponse.json(groups);
 }

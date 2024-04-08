@@ -2,43 +2,59 @@
 
 import AssignmentForm from "@/components/Form/Assignment/AssignmentForm";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { usePageHeader } from "@/context/PageHeaderContext";
+import { assignment1 } from "@/data/assignments";
+import { fetchAssignment } from "@/services/fetch";
+import { Assignment } from "@prisma/client";
+import { format } from "date-fns";
 import { CircleCheck, FileText } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const Assignment = () => {
+const AssignmentPage = () => {
   const { setHeaderText } = usePageHeader();
   const [isDelivered, setIsDelivered] = useState(false);
+  const searchParams = useSearchParams();
+  const groupId = searchParams.get("groupId");
+  const assignmentId = searchParams.get("id");
+  const [assignment, setAssignment] = useState<Assignment | null>(null);
 
   useEffect(() => {
-    setHeaderText("");
+    const fetchData = async () => {
+      if (!assignmentId) return;
+      const assignment: Assignment = await fetchAssignment(assignmentId);
+      setAssignment(assignment);
+    };
+
+    if (assignmentId) {
+      setHeaderText("Assignment " + assignmentId);
+      fetchData();
+    }
   }, []);
 
   return (
     <div className="grid grid-cols-12 gap-2">
-      <section className="col-span-6">
-        <div className="flex gap-2 items-center ">
-          <FileText size={120} />
-          <div>
-            <h1 className="font-bold">Assignment 1</h1>
-            <div className="grid grid-cols-3">
-              <p className="font-bold">Due:</p>
-              <p className="col-span-2">12.2.1</p>
-              <p className="font-bold">Time:</p>
-              <p className="col-span-2">16:00</p>
+      {assignment && (
+        <section className="col-span-6">
+          <div className="flex gap-2 items-center ">
+            <FileText size={120} />
+            <div>
+              <h1 className="font-bold">{assignment?.title}</h1>
+              <div className="grid grid-cols-3">
+                <p className="font-bold">Due:</p>
+                <p className="col-span-2">
+                  {new Date(assignment.dueDate).toDateString()}
+                </p>
+                <p className="font-bold">Time:</p>
+                <p className="col-span-2">
+                  {format(new Date(assignment.dueDate), "HH:mm")}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolores
-          obcaecati error voluptatem temporibus cum iure. Accusantium possimus
-          blanditiis voluptatum esse officiis? Excepturi veritatis expedita
-          quisquam nihil tenetur quia ab error cum totam non aliquid placeat,
-          cumque laudantium repudiandae blanditiis quis perspiciatis eos nemo
-          optio repellat, atque consectetur iure! Soluta, nisi!
-        </p>
-      </section>
+          <p>{assignment.description}</p>
+        </section>
+      )}
       <Card className="col-span-6">
         <CardHeader>
           <div className="flex justify-between">
@@ -61,4 +77,4 @@ const Assignment = () => {
   );
 };
 
-export default Assignment;
+export default AssignmentPage;

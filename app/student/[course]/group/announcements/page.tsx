@@ -1,6 +1,5 @@
 "use client";
 import { useStudentData } from "@/context/StudentContext";
-import { useCourse } from "@/hooks/useCourse";
 import { Announcement } from "@prisma/client";
 import { useEffect, useState } from "react";
 import {
@@ -9,22 +8,19 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { fetchAnnouncements } from "@/services/fetch";
 
 const Announcements = () => {
   const { course } = useStudentData();
-  const d = useCourse(course);
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
 
-  const fetchAnnouncements = async () => {
-    console.log("fetching announcements");
-    const res = await fetch(`/api/announcements?courseId=${course}`);
-    const data = await res.json();
-    setAnnouncements(data);
-  };
-
   useEffect(() => {
+    const fetchData = async () => {
+      const announcements: Announcement[] = await fetchAnnouncements(course);
+      setAnnouncements(announcements);
+    };
     if (course && announcements.length === 0) {
-      fetchAnnouncements();
+      fetchData();
     }
   }, [course, announcements]);
 

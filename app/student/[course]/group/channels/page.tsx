@@ -12,16 +12,29 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { usePageHeader } from "@/context/PageHeaderContext";
-import { useStudentData } from "@/context/StudentContext";
+import { Channel } from "@prisma/client";
 import { Plus } from "lucide-react";
-import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const Channels = () => {
   const { setHeaderText } = usePageHeader();
-  const data = useStudentData();
-  const channels = data.groupData.links;
+  const [channels, setChannels] = useState<Channel[]>([]);
+  const id = useSearchParams().get("groupId");
 
   if (!channels) return <p>no channels</p>;
+
+  const fetchGroupData = async () => {
+    const res = await fetch(`/api/group/data?groupId=${id}`);
+    const data = await res.json();
+    if (data) {
+      setChannels(data.channels);
+    }
+  };
+
+  useEffect(() => {
+    fetchGroupData();
+  }, []);
 
   useEffect(() => {
     setHeaderText("Channels");

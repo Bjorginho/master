@@ -1,5 +1,5 @@
 import {
-  Assignment,
+  AssignmentX,
   GroupReview,
   PeerReview,
 } from "@/app/student/[course]/group/page";
@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 export interface GroupData {
   id: string;
   members: Member[];
-  assignments?: Assignment[];
+  assignments?: AssignmentX[];
   peerReviews?: PeerReview[];
   groupReviews?: GroupReview[];
   links: Channel[];

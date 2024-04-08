@@ -1,4 +1,4 @@
-import { Channel } from "@/hooks/useGroup";
+import { Channel } from "@prisma/client";
 import { SocialIcon } from "react-social-icons";
 
 const SocialMediaIcon = ({ channel }: { channel: Channel }) => {

@@ -8,11 +8,10 @@ generator client {
 }
 
 model User {
-  id        Int    @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   firstName String
   lastName  String
-
-  student Student?
+  student   Student?
 }
 
 model Student {
@@ -21,9 +20,8 @@ model Student {
   firstName String
   lastName  String
   classes   StudentClass[]
-
-  user   User? @relation(fields: [userId], references: [id])
-  userId Int?  @unique
+  user      User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int?           @unique
 }
 
 model Course {
@@ -40,40 +38,92 @@ model Class {
   id            Int            @id @default(autoincrement())
   year          Int
   semester      SEMESTER
-  course        Course         @relation(fields: [courseCode], references: [code])
+  course        Course         @relation(fields: [courseCode], references: [code], onDelete: Cascade)
   courseCode    String
   students      StudentClass[]
   groups        Group[]
   announcements Announcement[]
+  assignments   Assignment[]
 }
 
 model Announcement {
-  id Int @id @default(autoincrement())
-
+  id        Int      @id @default(autoincrement())
   title     String
   content   String
   createdAt DateTime @default(now())
   author    String
-  class     Class?   @relation(fields: [classId], references: [id])
+  class     Class?   @relation(fields: [classId], references: [id], onDelete: Cascade)
   classId   Int?
 }
 
 model StudentClass {
-  student   Student @relation(fields: [studentId], references: [id])
+  id        Int           @id @default(autoincrement())
+  student   Student       @relation(fields: [studentId], references: [id], onDelete: Cascade)
   studentId Int
-  class     Class   @relation(fields: [classId], references: [id])
+  class     Class         @relation(fields: [classId], references: [id], onDelete: Cascade)
   classId   Int
-  group     Group?  @relation(fields: [groupId], references: [id])
-  groupId   Int?
+  groups    GroupMember[]
+}
 
-  @@id([studentId, classId])
+model GroupMember {
+  id             Int            @id @default(autoincrement())
+  studentClass   StudentClass   @relation(fields: [studentId], references: [id])
+  studentId      Int
+  group          Group          @relation(fields: [groupId], references: [id])
+  groupId        Int
+  contractSigned GroupContract? @relation(fields: [contractId], references: [id])
+  contractId     Int?
 }
 
 model Group {
-  id       Int            @id @default(autoincrement())
-  class    Class          @relation(fields: [classId], references: [id])
-  classId  Int
-  students StudentClass[]
+  id                   Int                   @id @default(autoincrement())
+  class                Class                 @relation(fields: [classId], references: [id], onDelete: Cascade)
+  classId              Int
+  students             GroupMember[]
+  channels             Channel[]
+  deliveredAssignments DeliveredAssignment[]
+  contract             GroupContract?
+}
+
+model GroupContract {
+  id        Int           @id @default(autoincrement())
+  group     Group         @relation(fields: [groupId], references: [id])
+  groupId   Int           @unique
+  title     String?
+  content   String?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  signedBy  GroupMember[]
+}
+
+model DeliveredAssignment {
+  id           Int        @id @default(autoincrement())
+  group        Group      @relation(fields: [groupId], references: [id])
+  groupId      Int
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  assignmentId Int
+  deliveredAt  DateTime?  @default(now())
+  grade        Float?
+  feedback     String?
+}
+
+model Assignment {
+  id          Int                   @id @default(autoincrement())
+  createdAt   DateTime              @default(now())
+  dueDate     DateTime
+  title       String
+  description String
+  class       Class                 @relation(fields: [classId], references: [id])
+  classId     Int
+  delivered   DeliveredAssignment[]
+}
+
+model Channel {
+  id      Int    @id @default(autoincrement())
+  name    String
+  url     String
+  group   Group  @relation(fields: [groupId], references: [id])
+  groupId Int
 }
 
 model Event {

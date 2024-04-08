@@ -1,5 +1,4 @@
 "use client";
-import NotificationButton from "@/components/NotificationButton";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   Card,
@@ -8,9 +7,13 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import {
+  CalendarDays,
   FileText,
   LucideIcon,
   MessageSquareMore,
+  MessageSquareWarning,
+  MessagesSquare,
+  ScrollText,
   UserRound,
   UsersRound,
 } from "lucide-react";
@@ -34,32 +37,57 @@ import PeerReview from "./peer/page";
 import ChannelButton from "@/components/Button/Channel";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Announcement } from "@prisma/client";
+import { Announcement, Assignment, Channel, Student } from "@prisma/client";
+import { fetchAnnouncements, fetchAssignments } from "@/services/fetch";
+import { format } from "date-fns";
 
-export default function Group() {
+export default function GroupPage() {
   const pathname = usePathname();
+  const router = useRouter();
   const id = useSearchParams().get("id");
   const params = useParams<{ course: string }>();
   const { setHeaderText } = usePageHeader();
   const { groupData } = useStudentData();
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+  const [members, setMembers] = useState<Student[]>([]);
+  const [channels, setChannels] = useState<Channel[]>([]);
+  const [allAssignments, setAllAssignments] = useState<Assignment[]>([]);
 
-  const fetchAnnouncements = async () => {
-    console.log("fetching announcements");
-    const res = await fetch(`/api/announcements?courseId=${params.course}`);
+  const fetchData = async () => {
+    // Assignments
+    if (allAssignments.length === 0 && id) {
+      const assignments: Assignment[] = await fetchAssignments(id);
+      setAllAssignments(assignments);
+    }
+    // Announcements
+    if (params.course && announcements.length === 0) {
+      const announcements: Announcement[] = await fetchAnnouncements(
+        params.course
+      );
+      setAnnouncements(announcements);
+    }
+    // Group Data
+    const res = await fetch(`/api/group/data?groupId=${id}`);
     const data = await res.json();
-    setAnnouncements(data);
+    if (data) {
+      setChannels(data.channels);
+      // setAllAssignments(data.deliveredAssignments);
+      const members = data.students.map(
+        (student: any) => student.studentClass.student
+      );
+      setMembers(members);
+    }
   };
 
   useEffect(() => {
-    if (id) setHeaderText("Group " + id);
-  }, [id, setHeaderText]);
+    fetchData();
+  }, []);
 
   useEffect(() => {
-    if (params.course && announcements.length === 0) {
-      fetchAnnouncements();
+    if (id) {
+      setHeaderText("Group " + id);
     }
-  }, []);
+  }, [id, setHeaderText]);
 
   return (
     <>
@@ -77,51 +105,71 @@ export default function Group() {
                     num={null}
                     text={"Chat"}
                     href="/chat"
+                    Icon={MessagesSquare}
                   />
                   <NotificationButton
                     num={null}
                     text={"Calendar"}
                     href="/calendar"
+                    Icon={CalendarDays}
                   />
                   <NotificationButton
                     num={4}
                     text={"Contract"}
-                    href="/contract"
+                    href={`/contract?groupId=${id}`}
+                    Icon={ScrollText}
                   />
                   <NotificationButton
                     num={4}
                     text={"Peer Reviews"}
                     href="/peer"
+                    Icon={UserRound}
                   />
                   <NotificationButton
                     num={4}
                     text={"Group Reviews"}
                     href="/group"
+                    Icon={UsersRound}
                   />
                 </CardContent>
               </Card>
               <div className="col-span-6 place-self-center w-full h-full flex flex-col gap-4">
                 <h2 className="font-semibold text-center">Upcoming tasks</h2>
-                <div className="grid grid-cols-4 gap-2 ">
-                  {groupData?.peerReviews?.map((pr, index) => (
+                <div className="grid grid-cols-4 gap-2">
+                  {/* {groupData?.peerReviews?.map((pr, index) => (
                     <Test key={index} kind="peer" task={pr} Icon={UserRound} />
+                  ))} */}
+                  {allAssignments.map((assignment, index) => (
+                    <Link
+                      key={index}
+                      href={{
+                        pathname: pathname + "/assignment",
+                        query: { id: assignment.id, groupId: id },
+                      }}
+                      className="flex flex-col gap-2 items-center hover:bg-gray-100 hover:shadow-md p-2 rounded-md cursor-pointer"
+                    >
+                      <FileText size={48} />
+                      <div className="flex flex-col items-center ">
+                        <h3 className="font-semibold text-sm">
+                          {assignment.title}
+                        </h3>
+                        <p className="text-sm">
+                          {new Date(assignment.dueDate).toLocaleDateString()}
+                        </p>
+                        <p className="text-sm">
+                          {format(new Date(assignment.dueDate), "HH:mm")}
+                        </p>
+                      </div>
+                    </Link>
                   ))}
-                  {groupData?.assignments?.map((assignment, index) => (
-                    <Test
-                      key={index + 99}
-                      kind="assignment"
-                      task={assignment}
-                      Icon={FileText}
-                    />
-                  ))}
-                  {groupData?.groupReviews?.map((gr, index) => (
+                  {/* {groupData?.groupReviews?.map((gr, index) => (
                     <Test
                       key={index + 999}
                       kind="group"
                       task={gr}
                       Icon={UsersRound}
                     />
-                  ))}
+                  ))}  */}
                 </div>
               </div>
 
@@ -130,7 +178,7 @@ export default function Group() {
                   <h2 className="text-center font-bold">Channels</h2>
                 </CardHeader>
                 <CardContent className="flex justify-center gap-2">
-                  {groupData.links.length === 0 && (
+                  {channels.length === 0 && (
                     <div className="flex flex-col gap-2 items-center">
                       <p>No linked channels!</p>
                       <Button variant={"outline"} asChild>
@@ -140,14 +188,17 @@ export default function Group() {
                       </Button>
                     </div>
                   )}
-                  {groupData.links?.map((channel, index) => (
+                  {channels.map((channel, index) => (
                     <ChannelButton key={index} channel={channel} />
                   ))}
                 </CardContent>
                 <CardFooter className="justify-center">
                   <Link
-                    href={pathname + "/channels"}
-                    className={cn(groupData.links.length === 0 && "hidden")}
+                    href={{
+                      pathname: pathname + "/channels",
+                      query: { groupId: id },
+                    }}
+                    className={cn(channels.length === 0 && "hidden")}
                   >
                     <p className="text-sm">Manage channels</p>
                   </Link>
@@ -159,7 +210,7 @@ export default function Group() {
                   <h2 className="text-center font-bold">Group members</h2>
                 </CardHeader>
                 <CardContent className="flex items-stretch justify-between">
-                  {groupData.members.map((member, index) => (
+                  {members.map((member, index) => (
                     <div
                       key={index}
                       className="flex flex-col items-center gap-2"
@@ -207,7 +258,9 @@ export default function Group() {
                   </Accordion>
                 </CardContent>
                 <CardFooter className="justify-center">
-                  <Link href={pathname + "/announcements"}>
+                  <Link
+                    href={{ pathname: pathname + "/announcements", query: {} }}
+                  >
                     <p className="text-sm">View all announcements</p>
                   </Link>
                 </CardFooter>
@@ -228,7 +281,40 @@ export default function Group() {
   );
 }
 
-export interface Assignment {
+interface Props {
+  disabled?: boolean;
+  num: number | null;
+  text: string;
+  href: string;
+  Icon: LucideIcon;
+}
+
+const NotificationButton = (props: Props) => {
+  const { num: notificationNumber, text: spanText, href, Icon } = props;
+  const pathname = usePathname();
+  const router = useRouter();
+
+  return (
+    <Button
+      disabled={props.disabled}
+      variant="ghost"
+      onClick={() => router.push(pathname + href)}
+      className="flex flex-col w-fit h-fit relative"
+    >
+      <div>
+        <Icon size={48} className="text-foreground" />
+      </div>
+      <p>{spanText}</p>
+      {notificationNumber && notificationNumber > 0 && (
+        <span className="absolute top-0 right-0 mt-[-5px] bg-red-500 text-white rounded-full px-2 py-1 text-xs">
+          {notificationNumber}
+        </span>
+      )}
+    </Button>
+  );
+};
+
+export interface AssignmentX {
   name: string;
   dueDate: Date;
 }
@@ -243,44 +329,44 @@ export interface GroupReview {
   dueDate: Date;
 }
 
-const Test = ({
-  kind,
-  task,
-  Icon,
-}: {
-  kind: "peer" | "assignment" | "group";
-  task: PeerReview | Assignment | GroupReview;
-  Icon: LucideIcon;
-}) => {
-  const router = useRouter();
-  const pathname = usePathname();
+// const Test = ({
+//   kind,
+//   task,
+//   Icon,
+// }: {
+//   kind: "peer" | "assignment" | "group";
+//   task: PeerReview | Assignment | GroupReview;
+//   Icon: LucideIcon;
+// }) => {
+//   const router = useRouter();
+//   const pathname = usePathname();
 
-  const handleClick = () => {
-    switch (kind) {
-      case "peer":
-        router.push(pathname + "/peer");
-        break;
-      case "assignment":
-        router.push(pathname + "/assignment");
-        break;
-      case "group":
-        router.push(pathname + "/group");
-        console.log("group");
-        break;
-    }
-  };
+//   const handleClick = () => {
+//     switch (kind) {
+//       case "peer":
+//         router.push(pathname + "/peer");
+//         break;
+//       case "assignment":
+//         router.push(pathname + "/assignment");
+//         break;
+//       case "group":
+//         router.push(pathname + "/group");
+//         console.log("group");
+//         break;
+//     }
+//   };
 
-  return (
-    <div
-      className="flex flex-col gap-2 items-center hover:bg-gray-100 hover:shadow-md p-2 rounded-md cursor-pointer"
-      onClick={handleClick}
-    >
-      <Icon size={48} />
-      <div className="flex flex-col items-center ">
-        <h3 className="font-semibold text-sm">{task.name}</h3>
-        <p className="text-sm">{task.dueDate.toLocaleDateString()}</p>
-        <p className="text-sm">{"16:30"}</p>
-      </div>
-    </div>
-  );
-};
+//   return (
+//     <div
+//       className="flex flex-col gap-2 items-center hover:bg-gray-100 hover:shadow-md p-2 rounded-md cursor-pointer"
+//       onClick={handleClick}
+//     >
+//       <Icon size={48} />
+//       <div className="flex flex-col items-center ">
+//         <h3 className="font-semibold text-sm">{task.dueDate}</h3>
+//         <p className="text-sm">{task.dueDate.toLocaleDateString()}</p>
+//         <p className="text-sm">{"16:30"}</p>
+//       </div>
+//     </div>
+//   );
+// };

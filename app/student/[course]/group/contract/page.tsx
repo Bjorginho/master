@@ -1,3 +1,5 @@
+"use client";
+
 import GroupContract from "@/components/Contract/Contract";
 import NotificationDialog from "@/components/Dialog/NotificationDialog";
 import ContractRevisionForm from "@/components/Form/ContractRevision/ContractRevisionForm";
@@ -9,10 +11,30 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
+import { fetchGroupContract } from "@/services/fetch";
+import { GroupContract as Contract } from "@prisma/client";
 import { format, parseISO } from "date-fns";
 import { UserRound } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
-export default function Contract() {
+export default function ContractPage() {
+  const searchParams = useSearchParams();
+  const [contract, setContract] = useState<Contract | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const groupId = searchParams.get("groupId");
+      if (!groupId) return;
+      const contract: Contract = await fetchGroupContract(groupId);
+      setContract(contract);
+    };
+
+    if (!contract) {
+      fetchData();
+    }
+  }, []);
+
   return (
     <div>
       <Card>
