@@ -18,7 +18,16 @@ export async function GET(request: NextRequest) {
       lastName: lastName,
     },
     include: {
-      classes: true,
+      classes: {
+        include: {
+          class: {
+            include: {
+              course: true,
+            },
+          },
+          group: true,
+        },
+      },
     },
   });
 

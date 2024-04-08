@@ -6,10 +6,23 @@ import { usePageHeader } from "@/context/PageHeaderContext";
 import { useStudentData } from "@/context/StudentContext";
 import { it1901Mock, it2810Mock, tet4850Mock } from "@/data/groupData";
 import { GroupData } from "@/hooks/useGroup";
-import { redirect, usePathname, useRouter } from "next/navigation";
+import { set } from "date-fns";
+import {
+  redirect,
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import { useEffect, useState } from "react";
 
 const Course = () => {
+  const params = useParams<{ course: string }>();
+  const searchParams = useSearchParams();
+
+  const [courseCode, setCourseCode] = useState<string | null>(null);
+  const [studentId, setStudentId] = useState<string | null>(null);
+
   const { setHeaderText } = usePageHeader();
   const { course, setGroupData } = useStudentData();
   const [groups, setGroups] = useState<GroupData[]>([]);
@@ -20,14 +33,23 @@ const Course = () => {
   }, [setHeaderText]);
 
   useEffect(() => {
-    if (course === "IT2810") setGroups(it2810Mock);
-    else if (course === "TET4854") setGroups(tet4850Mock);
-    else if (course === "IT1901") setGroups(it1901Mock);
-    else
-      setGroups([
-        { id: "1", members: [{ firstName: "Andreas", lastName: "Bakke" }] },
-      ]);
-  }, [course]);
+    if (!courseCode && params.course) {
+      setCourseCode(params.course);
+    }
+    if (!studentId && searchParams.get("studentId")) {
+      setStudentId(searchParams.get("studentId"));
+    }
+  }, [params, searchParams]);
+
+  // useEffect(() => {
+  //   if (course === "IT2810") setGroups(it2810Mock);
+  //   else if (course === "TET4854") setGroups(tet4850Mock);
+  //   else if (course === "IT1901") setGroups(it1901Mock);
+  //   else
+  //     setGroups([
+  //       { id: "1", members: [{ firstName: "Andreas", lastName: "Bakke" }] },
+  //     ]);
+  // }, [course]);
 
   useEffect(() => {
     if (groups.length === 1) {
