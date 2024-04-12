@@ -75,15 +75,16 @@ const Course = () => {
           <h1 className="text-center font-semibold mb-4">
             You have not joined a group yet
           </h1>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button>Join a group</Button>
-              {/* <Dialog */}
-            </DialogTrigger>
-            <DialogContent>
-              <JoinGroupForm />
-            </DialogContent>
-          </Dialog>
+          <div className="text-center">
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button>Join a group</Button>
+              </DialogTrigger>
+              <DialogContent className="overflow-y-scroll max-h-[90vh]">
+                <JoinGroupForm />
+              </DialogContent>
+            </Dialog>
+          </div>
         </>
       )}
     </div>
