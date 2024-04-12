@@ -33,25 +33,41 @@ import { useEffect, useState } from "react";
 import { usePageHeader } from "@/context/PageHeaderContext";
 import { useStudentData } from "@/context/StudentContext";
 import Link from "next/link";
-import PeerReview from "./peer/page";
 import ChannelButton from "@/components/Button/Channel";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Announcement, Assignment, Channel, Student } from "@prisma/client";
-import { fetchAnnouncements, fetchAssignments } from "@/services/fetch";
+import {
+  Announcement,
+  Assignment,
+  AssignmentReview,
+  Channel,
+  GroupReview,
+  Student,
+} from "@prisma/client";
+import {
+  fetchAllAssignmentReviews,
+  fetchAllGroupReviews,
+  fetchAnnouncements,
+  fetchAssignments,
+} from "@/services/fetch";
 import { format } from "date-fns";
 
 export default function GroupPage() {
   const pathname = usePathname();
-  const router = useRouter();
-  const id = useSearchParams().get("id");
-  const params = useParams<{ course: string }>();
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+  const studentId = searchParams.get("studentId");
+  const params = useParams<{ course: string; studentId: string }>();
   const { setHeaderText } = usePageHeader();
   const { groupData } = useStudentData();
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [members, setMembers] = useState<Student[]>([]);
   const [channels, setChannels] = useState<Channel[]>([]);
   const [allAssignments, setAllAssignments] = useState<Assignment[]>([]);
+  const [allAssignmentReviews, setAllAssignmentReviews] = useState<
+    AssignmentReview[]
+  >([]);
+  const [allGroupReviews, setAllGroupReviews] = useState<GroupReview[]>([]);
 
   const fetchData = async () => {
     // Assignments
@@ -65,6 +81,19 @@ export default function GroupPage() {
         params.course
       );
       setAnnouncements(announcements);
+    }
+    // Assignment Reviews
+    if (allAssignmentReviews.length === 0 && id && studentId) {
+      const reviews: AssignmentReview[] = await fetchAllAssignmentReviews(
+        id,
+        studentId
+      );
+      setAllAssignmentReviews(reviews);
+    }
+    // Group Reviews
+    if (allGroupReviews.length === 0 && id) {
+      const reviews: GroupReview[] = await fetchAllGroupReviews(id);
+      setAllGroupReviews(reviews);
     }
     // Group Data
     const res = await fetch(`/api/group/data?groupId=${id}`);
@@ -136,9 +165,31 @@ export default function GroupPage() {
               <div className="col-span-6 place-self-center w-full h-full flex flex-col gap-4">
                 <h2 className="font-semibold text-center">Upcoming tasks</h2>
                 <div className="grid grid-cols-4 gap-2">
-                  {/* {groupData?.peerReviews?.map((pr, index) => (
-                    <Test key={index} kind="peer" task={pr} Icon={UserRound} />
-                  ))} */}
+                  {allAssignmentReviews.map((assignmentReview, index) => (
+                    <Link
+                      key={index}
+                      href={{
+                        pathname: pathname + "/peer",
+                        query: { id: assignmentReview.id, groupId: id },
+                      }}
+                      className="flex flex-col gap-2 items-center hover:bg-gray-100 hover:shadow-md p-2 rounded-md cursor-pointer"
+                    >
+                      <UserRound size={48} />
+                      <div className="flex flex-col items-center ">
+                        <h3 className="font-semibold text-sm">
+                          {"Review Ass." + assignmentReview.id}
+                        </h3>
+                        <p className="text-sm">
+                          {new Date(
+                            assignmentReview.dueDate
+                          ).toLocaleDateString()}
+                        </p>
+                        <p className="text-sm">
+                          {format(new Date(assignmentReview.dueDate), "HH:mm")}
+                        </p>
+                      </div>
+                    </Link>
+                  ))}
                   {allAssignments.map((assignment, index) => (
                     <Link
                       key={index}
@@ -162,14 +213,29 @@ export default function GroupPage() {
                       </div>
                     </Link>
                   ))}
-                  {/* {groupData?.groupReviews?.map((gr, index) => (
-                    <Test
-                      key={index + 999}
-                      kind="group"
-                      task={gr}
-                      Icon={UsersRound}
-                    />
-                  ))}  */}
+                  {allGroupReviews.map((gr, index) => (
+                    <Link
+                      key={index}
+                      href={{
+                        pathname: pathname + "/group",
+                        query: { reviewId: gr.id },
+                      }}
+                      className="flex flex-col gap-2 items-center hover:bg-gray-100 hover:shadow-md p-2 rounded-md cursor-pointer"
+                    >
+                      <FileText size={48} />
+                      <div className="flex flex-col items-center ">
+                        <h3 className="font-semibold text-sm">
+                          {"Group review " + gr.id}
+                        </h3>
+                        <p className="text-sm">
+                          {new Date(gr.dueDate).toLocaleDateString()}
+                        </p>
+                        <p className="text-sm">
+                          {format(new Date(gr.dueDate), "HH:mm")}
+                        </p>
+                      </div>
+                    </Link>
+                  ))}
                 </div>
               </div>
 
@@ -226,7 +292,12 @@ export default function GroupPage() {
                   ))}
                 </CardContent>
                 <CardFooter className="justify-center">
-                  <Link href={pathname + "/members"}>
+                  <Link
+                    href={{
+                      pathname: pathname + "/members",
+                      query: { groupId: id },
+                    }}
+                  >
                     <p className="text-sm">Go to group page</p>
                   </Link>
                 </CardFooter>
@@ -281,15 +352,13 @@ export default function GroupPage() {
   );
 }
 
-interface Props {
+const NotificationButton = (props: {
   disabled?: boolean;
   num: number | null;
   text: string;
   href: string;
   Icon: LucideIcon;
-}
-
-const NotificationButton = (props: Props) => {
+}) => {
   const { num: notificationNumber, text: spanText, href, Icon } = props;
   const pathname = usePathname();
   const router = useRouter();
@@ -313,21 +382,6 @@ const NotificationButton = (props: Props) => {
     </Button>
   );
 };
-
-export interface AssignmentX {
-  name: string;
-  dueDate: Date;
-}
-
-export interface PeerReview {
-  name: string;
-  dueDate: Date;
-}
-
-export interface GroupReview {
-  name: string;
-  dueDate: Date;
-}
 
 // const Test = ({
 //   kind,

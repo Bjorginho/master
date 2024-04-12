@@ -3,14 +3,32 @@
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { useStudentData } from "@/context/StudentContext";
-import { Member } from "@/hooks/useGroup";
+import { GroupMember, Student } from "@prisma/client";
 import { Send, UserRound } from "lucide-react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const Members = () => {
-  const { groupData } = useStudentData();
-  const members = groupData.members;
+  const searchParams = useSearchParams();
+  const id = searchParams.get("groupId");
+  const [members, setMembers] = useState<Student[]>([]);
+
+  const fetchData = async () => {
+    if (!id) return;
+    const res = await fetch(`/api/group/data?groupId=${id}`);
+    const data = await res.json();
+    if (data) {
+      const members = data.students.map(
+        (student: any) => student.studentClass.student
+      );
+      setMembers(members);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [id]);
 
   return (
     <div className="flex justify-center">
@@ -30,11 +48,11 @@ const Members = () => {
   );
 };
 
-const MemberSection = ({ member }: { member: Member }) => {
-  const { firstName, lastName, email, fieldOfStudy, year } = member;
+const MemberSection = ({ member }: { member: Student }) => {
+  // const { firstName, lastName, email, fieldOfStudy, year } = member;
 
   function getInitials() {
-    return firstName.charAt(0) + lastName.charAt(0);
+    return member.firstName.charAt(0) + member.lastName.charAt(0);
   }
 
   return (
@@ -45,15 +63,15 @@ const MemberSection = ({ member }: { member: Member }) => {
           <p className="text-lg">{getInitials()}</p>
         </AvatarFallback>
       </Avatar>
-      <p className="text-sm">{firstName}</p>
+      <p className="text-sm">{member.firstName}</p>
       <Button size="sm" variant={"ghost"} className="gap-1" asChild>
-        <Link href={"mailto:" + email}>
+        <Link href={"mailto:" + member.email}>
           <Send />
           <p className="text-xs">Mail</p>
         </Link>
       </Button>
-      {fieldOfStudy && <p>{fieldOfStudy}</p>}
-      {year && <p>{year}th grade</p>}
+      {/* {fieldOfStudy && <p>{fieldOfStudy}</p>}
+      {year && <p>{year}th grade</p>} */}
     </div>
   );
 };

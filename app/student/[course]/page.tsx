@@ -3,15 +3,12 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardFooter } from "@/components/ui/card";
 import { usePageHeader } from "@/context/PageHeaderContext";
-import { useStudentData } from "@/context/StudentContext";
-import { it1901Mock, it2810Mock, tet4850Mock } from "@/data/groupData";
-import { GroupData } from "@/hooks/useGroup";
 import { GroupMember } from "@prisma/client";
+import Link from "next/link";
 import {
   redirect,
   useParams,
   usePathname,
-  useRouter,
   useSearchParams,
 } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -65,20 +62,21 @@ const Course = () => {
       <h1 className="text-center font-semibold mb-4">Select group</h1>
       <div className="flex gap-2 justify-center">
         {groups.map((group, index) => (
-          <GroupCard key={index} group={group} />
+          <GroupCard key={index} group={group} studentId={studentId} />
         ))}
       </div>
     </div>
   );
 };
 
-const GroupCard = ({ group }: { group: GroupMember }) => {
-  const router = useRouter();
+const GroupCard = ({
+  group,
+  studentId,
+}: {
+  group: GroupMember;
+  studentId?: string | null;
+}) => {
   const pathname = usePathname();
-
-  const handleClick = () => {
-    router.push(pathname + "/group?id=" + group.id);
-  };
 
   return (
     <Card>
@@ -86,7 +84,16 @@ const GroupCard = ({ group }: { group: GroupMember }) => {
         <h2 className="text-center">{group.id}</h2>
       </CardHeader>
       <CardFooter>
-        <Button onClick={handleClick}>Go to group</Button>
+        <Button asChild>
+          <Link
+            href={{
+              pathname: pathname + "/group",
+              query: { id: group.id, studentId: studentId },
+            }}
+          >
+            Go to group
+          </Link>
+        </Button>
       </CardFooter>
     </Card>
   );

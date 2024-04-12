@@ -17,3 +17,18 @@ export const fetchGroupContract = async (groupId: string) => {
   const response = await fetch(`/api/contract?groupId=${groupId}`);
   return response.json();
 };
+
+export const fetchAllAssignmentReviews = async (
+  groupId: string,
+  studentId: string
+) => {
+  const response = await fetch(
+    `/api/assignment/review/all?groupId=${groupId}&studentId=${studentId}`
+  );
+  return response.json();
+};
+
+export const fetchAllGroupReviews = async (groupId: string) => {
+  const response = await fetch(`/api/group/review/all?id=${groupId}`);
+  return response.json();
+};
