@@ -3,7 +3,6 @@ import {
   add,
   eachDayOfInterval,
   endOfMonth,
-  endOfWeek,
   format,
   getDay,
   isEqual,
@@ -12,23 +11,21 @@ import {
   isToday,
   parse,
   parseISO,
-  startOfMonth,
   startOfToday,
-  startOfWeek,
 } from "date-fns";
 
 import { useContext, useState } from "react";
 import CalendarHeader from "./_Header";
-import { Event, events } from "./dummyData";
 import { CalendarContext } from "@/context/Calendar";
 import { cn } from "@/lib/utils";
+import { Event } from "@prisma/client";
 
 export default function MonthView() {
   let today = startOfToday();
   // let [selectedDay, setSelectedDay] = useState(today);
   let [currentMonth, setCurrentMonth] = useState(format(today, "MMM-yyyy"));
   let firstDayCurrentMonth = parse(currentMonth, "MMM-yyyy", new Date());
-  const { selectedDay, setSelectedDay } = useContext(CalendarContext);
+  const { selectedDay, setSelectedDay, events } = useContext(CalendarContext);
 
   let days = eachDayOfInterval({
     start: firstDayCurrentMonth,
@@ -46,22 +43,7 @@ export default function MonthView() {
   }
 
   function getEventsForDay(day: Date) {
-    return events.filter((event) =>
-      isSameDay(parseISO(event.startDatetime), day)
-    );
-  }
-
-  function getEventBackground(event: Event) {
-    switch (event) {
-      case "assignment":
-        return "bg-red-500";
-      case "work":
-        return "bg-blue-500";
-      case "peer review":
-        return "bg-green-500";
-      default:
-        return "bg-gray-500";
-    }
+    return events.filter((event) => isSameDay(event.startDate, day));
   }
 
   return (
@@ -113,18 +95,10 @@ export default function MonthView() {
                           key={index}
                           className={cn(
                             "flex gap-1 items-center",
-                            event.type === "assignment" &&
-                              "bg-red-500 text-background rounded-md"
+                            "bg-red-500 text-background rounded-md"
                           )}
                         >
-                          <div
-                            className={cn(
-                              "size-3 rounded-full",
-                              getEventBackground(event.type),
-                              event.type === "peer review" && "bg-red-400",
-                              event.type === "work" && "bg-blue-400"
-                            )}
-                          />
+                          <div className={cn("size-3 rounded-full")} />
                           <p>{event.name}</p>
                         </div>
                       ))}
