@@ -5,7 +5,6 @@ import { Course, Student } from "@prisma/client";
 import { useEffect, useState } from "react";
 
 export default function Courses() {
-  // const { courses } = useUser();
   const [student, setStudent] = useState<Student | null>(null);
   const [courses, setCourses] = useState<Course[]>([]);
 
