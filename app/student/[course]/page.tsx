@@ -1,7 +1,9 @@
 "use client";
 
+import JoinGroupForm from "@/components/Form/JoinGroup/JoinGroupForm";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardFooter } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { usePageHeader } from "@/context/PageHeaderContext";
 import { GroupMember } from "@prisma/client";
 import Link from "next/link";
@@ -59,12 +61,31 @@ const Course = () => {
 
   return (
     <div>
-      <h1 className="text-center font-semibold mb-4">Select group</h1>
-      <div className="flex gap-2 justify-center">
-        {groups.map((group, index) => (
-          <GroupCard key={index} group={group} studentId={studentId} />
-        ))}
-      </div>
+      {groups.length > 0 ? (
+        <>
+          <h1 className="text-center font-semibold mb-4">Select group</h1>
+          <div className="flex gap-2 justify-center">
+            {groups.map((group, index) => (
+              <GroupCard key={index} group={group} studentId={studentId} />
+            ))}
+          </div>
+        </>
+      ) : (
+        <>
+          <h1 className="text-center font-semibold mb-4">
+            You have not joined a group yet
+          </h1>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button>Join a group</Button>
+              {/* <Dialog */}
+            </DialogTrigger>
+            <DialogContent>
+              <JoinGroupForm />
+            </DialogContent>
+          </Dialog>
+        </>
+      )}
     </div>
   );
 };
