@@ -39,6 +39,10 @@ const JoinGroupForm = () => {
         className="flex flex-col gap-2 space-y-2"
       >
         <h1>Please fill out the form</h1>
+        <FormDescription>
+          To setup a group that works properly it is important that you fill out
+          the form below.
+        </FormDescription>
         <FormField
           control={form.control}
           name="existingKnowledge"
@@ -78,18 +82,6 @@ const JoinGroupForm = () => {
             </FormItem>
           )}
         />
-
-        {/* <FormLabel>Have you arranged group with someone else?</FormLabel>
-        <Checkbox onCheckedChange={() => setAlone(!alone)} />
-        {alone ? (
-          <FormItem>
-            <FormLabel>Enter student ID</FormLabel>
-            <Input {...form.register("fellowStudents.0")} />
-            <FormDescription>
-              You can add more than one student ID
-            </FormDescription>
-          </FormItem>
-        ) : null} */}
 
         <FormField
           control={form.control}
@@ -216,6 +208,23 @@ const JoinGroupForm = () => {
             </FormItem>
           )}
         />
+
+        <FormLabel>Have you arranged group with someone else?</FormLabel>
+        <div className="flex gap-2 items-center">
+          <Checkbox checked={alone} onCheckedChange={() => setAlone(true)} />
+          <p>Yes</p>
+          <Checkbox checked={!alone} onCheckedChange={() => setAlone(false)} />
+          <p>No</p>
+        </div>
+        {alone ? (
+          <FormItem>
+            <FormLabel>Type in name of student(s)</FormLabel>
+            <Input {...form.register("fellowStudents.0")} />
+            <FormDescription>
+              Separate each student with a comma (,)
+            </FormDescription>
+          </FormItem>
+        ) : null}
 
         <Button type="submit">Submit</Button>
       </form>
