@@ -11,6 +11,8 @@ import { Smile, Meh, Frown, LucideIcon } from "lucide-react";
 import { givenFeedback, incomingFeedback } from "./data";
 import { Button } from "@/components/ui/button";
 import MyChart from "@/components/Chart/Chart";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export interface GroupFeedback {
   title: string;
@@ -33,6 +35,7 @@ const Group = () => {
 };
 
 const UpcomingFeedback = ({ className }: { className?: string }) => {
+  const pathname = usePathname();
   return (
     <Card className={cn(className)}>
       <CardHeader className="p-3 pb-0">
@@ -43,14 +46,19 @@ const UpcomingFeedback = ({ className }: { className?: string }) => {
           {incomingFeedback.map((feedback, index) => (
             <Card key={index} className="bg-[#E8E7DF]">
               <CardHeader className="pb-3">
-                <p className="font-semibold">Feedback week {feedback.title} </p>
+                <p className="font-semibold">{feedback.title} </p>
               </CardHeader>
               <CardContent className="pb-3">
                 <p className="text-sm">{feedback.description}</p>
               </CardContent>
               <CardFooter className="flex justify-between items-center">
                 {!feedback.isCompleted && <p className="text-sm">Missing</p>}
-                <Button size={"sm"}>Evaluate</Button>
+
+                <Button size={"sm"} asChild>
+                  <Link href={{ pathname: pathname + "/review" }}>
+                    Evaluate
+                  </Link>
+                </Button>
               </CardFooter>
             </Card>
           ))}
@@ -71,7 +79,7 @@ const GivenFeedback = ({ className }: { className?: string }) => {
           {givenFeedback.map((feedback, index) => (
             <Card key={index} className="bg-[#E8E7DF]">
               <CardHeader className="pb-3">
-                <p className="font-semibold">Feedback week {feedback.title} </p>
+                <p className="font-semibold">{feedback.title} </p>
               </CardHeader>
               <CardContent className="pb-3">
                 <p className="text-sm">{feedback.description}</p>

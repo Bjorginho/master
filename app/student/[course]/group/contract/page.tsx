@@ -53,7 +53,7 @@ export default function ContractPage() {
           </Dialog>
         </CardHeader>
         <CardContent>
-          <GroupContract />
+          {contract && <GroupContract contract={contract} />}
         </CardContent>
         <CardFooter className="justify-between items-start px-16">
           <div>

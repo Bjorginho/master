@@ -1,12 +1,14 @@
 "use client";
 
+import { GroupContract as Contract } from "@prisma/client";
 import { ScrollArea } from "../ui/scroll-area";
 
-const GroupContract = () => {
+const GroupContract = ({ contract }: { contract: Contract }) => {
   return (
     <ScrollArea className="mx-auto border p-12 bg-[#fff] text-[#000]">
       <section className="flex flex-col gap-4">
-        <h1 className="font-semibold ">Group contract</h1>
+        <h1 className="font-semibold ">{contract.title}</h1>
+
         <h2>Motivasjon of arbeidsinnsats</h2>
 
         <div>
