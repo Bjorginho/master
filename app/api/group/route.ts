@@ -16,16 +16,6 @@ export async function GET(request: NextRequest) {
 
   const studentId = parseInt(studentIdStr);
 
-  const g = await prisma.group.findMany({
-    where: {
-      class: {
-        courseCode: courseCode,
-      },
-    },
-  });
-
-  console.table(g);
-
   const groups = await prisma.group.findMany({
     where: {
       AND: [
@@ -49,8 +39,6 @@ export async function GET(request: NextRequest) {
       },
     },
   });
-
-  console.table(groups);
 
   return NextResponse.json(groups);
 }
