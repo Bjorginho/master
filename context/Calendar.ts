@@ -1,3 +1,4 @@
+import { Event } from "@prisma/client";
 import { startOfToday } from "date-fns";
 import React, { createContext, useContext } from "react";
 
@@ -8,6 +9,9 @@ interface CalendarContextProps {
   setView: React.Dispatch<React.SetStateAction<View>>;
   selectedDay: Date;
   setSelectedDay: React.Dispatch<React.SetStateAction<Date>>;
+  events: Event[];
+  setEvents: React.Dispatch<React.SetStateAction<Event[]>>;
+  fetchAllEvents: () => void;
 }
 
 export const CalendarContext = createContext<CalendarContextProps>({
@@ -15,6 +19,9 @@ export const CalendarContext = createContext<CalendarContextProps>({
   setView: () => {},
   selectedDay: startOfToday(),
   setSelectedDay: () => {},
+  events: [],
+  setEvents: () => [],
+  fetchAllEvents: () => null,
 });
 
 export const useCalendar = () => useContext(CalendarContext);

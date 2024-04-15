@@ -154,12 +154,13 @@ model Channel {
 }
 
 model Event {
-  id        Int       @id @default(autoincrement())
-  name      String
-  startDate DateTime
-  endDate   DateTime?
-  location  String
-  createdAt DateTime  @default(now())
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  startDate   DateTime
+  endDate     DateTime?
+  location    String
+  createdAt   DateTime  @default(now())
 }
 
 enum Role {
