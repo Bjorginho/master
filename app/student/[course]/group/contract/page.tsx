@@ -33,7 +33,7 @@ export default function ContractPage() {
     if (!contract) {
       fetchData();
     }
-  }, []);
+  }, [contract, searchParams]);
 
   return (
     <div>

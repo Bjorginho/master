@@ -1,6 +1,6 @@
 # Use the official Node.js 16 image.
 # Check https://hub.docker.com/_/node to see all available Node.js versions.
-FROM node:16-alpine
+FROM node:18
 
 # Create and change to the app directory.
 WORKDIR /usr/src/app
@@ -10,16 +10,16 @@ WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 
 # Install dependencies
-RUN yarn install --frozen-lockfile
+RUN npm install
 
 # Copy local code to the container's workspace.
 COPY . .
 
 # Build the application for production.
-RUN yarn build
+RUN npm run build
 
 # Expose the port the app runs on
-EXPOSE 3002
+EXPOSE 3000
 
 # Run the app using Node.js
 CMD ["npm", "start"]

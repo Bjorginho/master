@@ -18,28 +18,27 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { courses } from "@/types/Course";
-import { Course } from "@/types/types";
+import { Course } from "@prisma/client";
 import { ChevronsDown, Plus } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
 const current: Course[] = [
-  {
-    code: "IT2810",
-    title: "Web Development",
-    institute: "Department of Computer Science",
-  },
-  {
-    code: "TMM4220",
-    title: "Innovation Design Thinking",
-    institute: "Departmnt of Mechanical and Industrial Engineering",
-  },
-  {
-    code: "TDT4240",
-    title: "Software Architecture",
-    institute: "Department of Computer Science",
-  },
+  // {
+  //   code: "IT2810",
+  //   title: "Web Development",
+  //   institute: "Department of Computer Science",
+  // },
+  // {
+  //   code: "TMM4220",
+  //   title: "Innovation Design Thinking",
+  //   institute: "Departmnt of Mechanical and Industrial Engineering",
+  // },
+  // {
+  //   code: "TDT4240",
+  //   title: "Software Architecture",
+  //   institute: "Department of Computer Science",
+  // },
 ];
 
 function Admin() {
@@ -69,7 +68,7 @@ function Admin() {
                 <h3 className="font-semibold">{course.code}</h3>
               </CardHeader>
               <CardContent className="flex flex-col gap-2">
-                <p className="text-2xl">{course.title}</p>
+                <p className="text-2xl">{course.name}</p>
                 <p className="font-light text-sm">{course.institute}</p>
                 <p className="font-light">{200} students</p>
               </CardContent>

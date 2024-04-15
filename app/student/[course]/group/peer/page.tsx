@@ -69,7 +69,7 @@ export default function PeerReview() {
 
   useEffect(() => {
     setHeaderText("Peer Review");
-  }, []);
+  }, [setHeaderText]);
 
   return (
     <div className="flex gap-2 ">

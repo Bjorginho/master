@@ -7,9 +7,8 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "../ui/button";
 import { usePathname, useRouter } from "next/navigation";
-import { Feedback } from "@/app/student/[course]/group/feedback/peer/page";
 
-const FeedbackAccordion = (props: { feedbackList: Feedback[] }) => {
+const FeedbackAccordion = (props: { feedbackList: any[] }) => {
   const feedbackList = props.feedbackList;
 
   return (

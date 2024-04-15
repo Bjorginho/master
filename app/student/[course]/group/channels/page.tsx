@@ -22,6 +22,11 @@ const Channels = () => {
   const [channels, setChannels] = useState<Channel[]>([]);
   const id = useSearchParams().get("groupId");
 
+  useEffect(() => {
+    fetchGroupData();
+    setHeaderText("Channels");
+  }, [setHeaderText]);
+
   if (!channels) return <p>no channels</p>;
 
   const fetchGroupData = async () => {
@@ -31,14 +36,6 @@ const Channels = () => {
       setChannels(data.channels);
     }
   };
-
-  useEffect(() => {
-    fetchGroupData();
-  }, []);
-
-  useEffect(() => {
-    setHeaderText("Channels");
-  }, []);
 
   return (
     <div className="flex flex-col gap-4 space-y-8">

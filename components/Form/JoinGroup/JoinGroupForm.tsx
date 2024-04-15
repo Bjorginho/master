@@ -70,8 +70,11 @@ const JoinGroupForm = () => {
                 defaultValue={field.value}
                 className="flex gap-3 justify-center"
               >
-                {[1, 2, 3, 4, 5].map((value) => (
-                  <FormItem className="flex days-center space-x-3 space-y-0 ">
+                {[1, 2, 3, 4, 5].map((value, index) => (
+                  <FormItem
+                    key={index}
+                    className="flex days-center space-x-3 space-y-0 "
+                  >
                     <FormControl>
                       <RadioGroupItem value={value.toString()} />
                     </FormControl>
@@ -99,8 +102,11 @@ const JoinGroupForm = () => {
                   "Moderately commited",
                   "Strongly commited",
                   "Highly ambitious",
-                ].map((value) => (
-                  <FormItem className="flex days-center space-x-3 space-y-0 ">
+                ].map((value, index) => (
+                  <FormItem
+                    key={index}
+                    className="flex days-center space-x-3 space-y-0 "
+                  >
                     <FormControl>
                       <RadioGroupItem value={value.toString()} />
                     </FormControl>
@@ -126,8 +132,11 @@ const JoinGroupForm = () => {
                 defaultValue={field.value}
                 className="flex flex-col gap-3"
               >
-                {["<5", "5-10", "10-15", "15-20", ">20"].map((value) => (
-                  <FormItem className="flex days-center space-x-3 space-y-0 ">
+                {["<5", "5-10", "10-15", "15-20", ">20"].map((value, index) => (
+                  <FormItem
+                    key={index}
+                    className="flex days-center space-x-3 space-y-0 "
+                  >
                     <FormControl>
                       <RadioGroupItem value={value.toString()} />
                     </FormControl>
@@ -196,8 +205,11 @@ const JoinGroupForm = () => {
                 defaultValue={field.value}
                 className="flex flex-col gap-3"
               >
-                {["digital", "physical", "both"].map((value) => (
-                  <FormItem className="flex days-center space-x-3 space-y-0 ">
+                {["digital", "physical", "both"].map((value, index) => (
+                  <FormItem
+                    key={index}
+                    className="flex days-center space-x-3 space-y-0 "
+                  >
                     <FormControl>
                       <RadioGroupItem value={value.toString()} />
                     </FormControl>

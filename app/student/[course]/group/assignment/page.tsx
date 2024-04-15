@@ -3,7 +3,6 @@
 import AssignmentForm from "@/components/Form/Assignment/AssignmentForm";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { usePageHeader } from "@/context/PageHeaderContext";
-import { assignment1 } from "@/data/assignments";
 import { fetchAssignment } from "@/services/fetch";
 import { Assignment } from "@prisma/client";
 import { format } from "date-fns";
@@ -30,7 +29,7 @@ const AssignmentPage = () => {
       setHeaderText("Assignment " + assignmentId);
       fetchData();
     }
-  }, []);
+  }, [assignmentId, setHeaderText]);
 
   return (
     <div className="grid grid-cols-12 gap-2">

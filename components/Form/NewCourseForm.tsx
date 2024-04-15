@@ -47,16 +47,15 @@ const NewCourseForm = ({
   });
 
   function onSubmit(values: Schema) {
-    const course = courses.find((course) => course.code === values.course);
-
+    // const course = courses.find((course) => course.code === values.course);
     // Register new course
-    if (course) {
-      setCourses((prevCourses) => [...prevCourses, course]);
-      // Navigate to new course
-      router.push(
-        `/admin/course/register?code=${course.code}&semester=1&year=2024`
-      );
-    }
+    // if (course) {
+    //   setCourses((prevCourses) => [...prevCourses, course]);
+    //   // Navigate to new course
+    //   router.push(
+    //     `/admin/course/register?code=${course.code}&semester=1&year=2024`
+    //   );
+    // }
   }
 
   return (
@@ -89,11 +88,11 @@ const NewCourseForm = ({
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {courses.map((course, index) => (
+                  {/* {courses.map((course, index) => (
                     <SelectItem key={index} value={course.code}>
                       {course.code} - {course.name}
                     </SelectItem>
-                  ))}
+                  ))} */}
                 </SelectContent>
               </Select>
               <FormMessage />

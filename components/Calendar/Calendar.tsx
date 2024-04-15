@@ -21,7 +21,7 @@ const Calendar = () => {
     if (events.length === 0) {
       fetchAllEvents();
     }
-  }, []);
+  }, [events.length, fetchAllEvents]);
 
   return (
     <CalendarContext.Provider

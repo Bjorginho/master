@@ -2,7 +2,6 @@
 import { PageHeaderContext } from "@/context/PageHeaderContext";
 import { ThemeProvider } from "@/components/theme-provider";
 import { useState } from "react";
-import { GroupData } from "@/hooks/useGroup";
 import { StudentContext } from "@/context/StudentContext";
 
 export const Providers = ({ children }: { children: React.ReactNode }) => {
@@ -34,7 +33,7 @@ export const StudentProviders = ({
   children: React.ReactNode;
 }) => {
   const [currentCourse, setCurrentCourse] = useState<string>("");
-  const [groupData, setGroupData] = useState<GroupData>({
+  const [groupData, setGroupData] = useState({
     id: "",
     members: [],
   });

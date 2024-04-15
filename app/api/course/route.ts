@@ -1,4 +1,3 @@
-import { GroupData } from "@/hooks/useGroup";
 import { Course } from "@/types/types";
 import { NextRequest, NextResponse } from "next/server";
 

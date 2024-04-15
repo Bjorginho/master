@@ -37,7 +37,7 @@ const Course = () => {
     if (!studentId && searchParams.get("studentId")) {
       setStudentId(searchParams.get("studentId"));
     }
-  }, [params, searchParams]);
+  }, [params, searchParams, courseCode, studentId]);
 
   async function fetchGroups() {
     const response = await fetch(
@@ -51,13 +51,13 @@ const Course = () => {
     if (courseCode && studentId) {
       fetchGroups();
     }
-  }, [courseCode, studentId]);
+  }, [courseCode, studentId, fetchGroups]);
 
   useEffect(() => {
     if (groups.length === 1) {
       redirect(pathname + "/group?id=" + groups[0].id);
     }
-  }, [groups]);
+  }, [groups, pathname]);
 
   return (
     <div>

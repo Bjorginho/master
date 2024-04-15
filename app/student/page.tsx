@@ -28,7 +28,7 @@ export default function Courses() {
     if (!student) {
       fetchUserStudentData();
     }
-  }, []);
+  }, [student]);
 
   return (
     <>

@@ -28,7 +28,7 @@ export const schema = z.object({
 
 export type Schema = z.infer<typeof schema>;
 
-const AssignmentForm = ({ fnAction }: { fnAction: Dispatch }) => {
+const AssignmentForm = ({ fnAction }: { fnAction: Dispatch<any> }) => {
   const form = useForm<Schema>({
     resolver: zodResolver(schema),
   });
