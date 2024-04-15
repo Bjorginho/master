@@ -15,6 +15,8 @@ RUN npm install
 # Copy local code to the container's workspace.
 COPY . .
 
+RUN npx prisma generate
+
 # Build the application for production.
 RUN npm run build
 
