@@ -3,10 +3,12 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const courseId = searchParams.get("courseId");
+  const courseCode = searchParams.get("courseId");
   const studentIdStr = searchParams.get("studentId");
 
-  if (!courseId || !studentIdStr)
+  console.table({ courseId: courseCode, studentIdStr });
+
+  if (!courseCode || !studentIdStr)
     return Response.json(
       { message: "Missing required parameters" },
       { status: 400 }
@@ -14,11 +16,29 @@ export async function GET(request: NextRequest) {
 
   const studentId = parseInt(studentIdStr);
 
+  const g = await prisma.group.findMany({
+    where: {
+      class: {
+        courseCode: courseCode,
+      },
+    },
+  });
+
+  console.table(g);
+
   const groups = await prisma.group.findMany({
     where: {
       AND: [
-        { class: { courseCode: courseId } }, // Filter by courseCode
-        { students: { some: { studentId: studentId } } }, // Filter by studentId
+        { class: { courseCode: courseCode } },
+        {
+          students: {
+            some: {
+              studentClass: {
+                studentId: studentId,
+              },
+            },
+          },
+        },
       ],
     },
     include: {
@@ -29,6 +49,8 @@ export async function GET(request: NextRequest) {
       },
     },
   });
+
+  console.table(groups);
 
   return NextResponse.json(groups);
 }
